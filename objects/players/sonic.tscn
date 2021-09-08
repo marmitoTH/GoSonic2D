@@ -1,0 +1,259 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://scripts/player/states/rolling_player_state.gd" type="Script" id=1]
+[ext_resource path="res://scripts/player/states/air_player_state.gd" type="Script" id=2]
+[ext_resource path="res://scripts/player/states/regular_player_state.gd" type="Script" id=3]
+[ext_resource path="res://scripts/player/states/braking_player_state.gd" type="Script" id=4]
+[ext_resource path="res://scripts/player/resources/player_stats.gd" type="Script" id=5]
+[ext_resource path="res://sprites/sonic.png" type="Texture" id=6]
+[ext_resource path="res://scripts/player/player_state_machine.gd" type="Script" id=7]
+[ext_resource path="res://scripts/player/resources/player_collision.gd" type="Script" id=8]
+[ext_resource path="res://scripts/player/player.gd" type="Script" id=9]
+[ext_resource path="res://scripts/player/player_skin.gd" type="Script" id=10]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 8 )
+offset = Vector2( 0, 0 )
+height_radius = 19.0
+width_radius = 9.0
+push_height_offset = 8.0
+push_radius = 1.0
+ground_extension = 17.0
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 8 )
+offset = Vector2( 0, -5 )
+height_radius = 14.0
+width_radius = 7.0
+push_height_offset = 8.0
+push_radius = 3.0
+ground_extension = 17.0
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 5 )
+acceleration = 168.75
+deceleration = 1800.0
+friction = 168.75
+slope_factor = 450.0
+top_speed = 360.0
+dash_speed = 600.0
+min_speed_to_roll = 60.0
+unroll_speed = 30.0
+slope_roll_up = 281.25
+slope_roll_down = 1125.0
+roll_friction = 84.375
+air_acceleration = 337.5
+gravity = 787.5
+max_jump_height = 390.0
+min_jump_height = 240.0
+slide_angle = 45.0
+fall_angle = 80.0
+min_speed_to_fall = 150.0
+control_lock_duration = 0.5
+
+[sub_resource type="Animation" id=4]
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 83, 84, 85, 86 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 25, 29, 26, 29, 27, 29, 28, 29 ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 21, 22, 23, 24 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 30, 31, 32, 33 ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 1.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16, 17, 18, 19, 20 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "walking"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "running"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "rolling"
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "peel_out"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "skidding"
+
+[sub_resource type="AnimationNodeAnimation" id=15]
+animation = "idle"
+
+[sub_resource type="AnimationNodeTransition" id=16]
+input_count = 4
+input_0/name = "idle"
+input_0/auto_advance = false
+input_1/name = "walking"
+input_1/auto_advance = false
+input_2/name = "running"
+input_2/auto_advance = false
+input_3/name = "peel_out"
+input_3/auto_advance = false
+
+[sub_resource type="AnimationNodeTimeScale" id=17]
+
+[sub_resource type="AnimationNodeTimeScale" id=18]
+
+[sub_resource type="AnimationNodeTransition" id=19]
+input_count = 3
+input_0/name = "ground"
+input_0/auto_advance = false
+input_1/name = "rolling"
+input_1/auto_advance = false
+input_2/name = "skidding"
+input_2/auto_advance = false
+
+[sub_resource type="AnimationNodeBlendTree" id=20]
+graph_offset = Vector2( -449, 141 )
+nodes/Animation/node = SubResource( 15 )
+nodes/Animation/position = Vector2( -380, 140 )
+"nodes/Animation 2/node" = SubResource( 10 )
+"nodes/Animation 2/position" = Vector2( -380, 260 )
+"nodes/Animation 3/node" = SubResource( 11 )
+"nodes/Animation 3/position" = Vector2( -380, 380 )
+"nodes/Animation 4/node" = SubResource( 12 )
+"nodes/Animation 4/position" = Vector2( -140, 520 )
+"nodes/Animation 5/node" = SubResource( 13 )
+"nodes/Animation 5/position" = Vector2( -380, 500 )
+"nodes/Animation 6/node" = SubResource( 14 )
+"nodes/Animation 6/position" = Vector2( 80, 580 )
+nodes/ground/node = SubResource( 16 )
+nodes/ground/position = Vector2( -140, 260 )
+nodes/ground_time/node = SubResource( 17 )
+nodes/ground_time/position = Vector2( 80, 300 )
+nodes/output/position = Vector2( 520, 400 )
+nodes/rolling_time/node = SubResource( 18 )
+nodes/rolling_time/position = Vector2( 80, 440 )
+nodes/root_state/node = SubResource( 19 )
+nodes/root_state/position = Vector2( 340, 400 )
+node_connections = [ "output", 0, "root_state", "ground", 0, "Animation", "ground", 1, "Animation 2", "ground", 2, "Animation 3", "ground", 3, "Animation 5", "ground_time", 0, "ground", "rolling_time", 0, "Animation 4", "root_state", 0, "ground_time", "root_state", 1, "rolling_time", "root_state", 2, "Animation 6" ]
+
+[node name="Sonic" type="Node2D"]
+script = ExtResource( 9 )
+bounds = [ SubResource( 1 ), SubResource( 2 ) ]
+stats = [ SubResource( 3 ) ]
+
+[node name="StateMachine" type="Node2D" parent="."]
+script = ExtResource( 7 )
+
+[node name="Regular" type="Node2D" parent="StateMachine"]
+script = ExtResource( 3 )
+
+[node name="Rolling" type="Node2D" parent="StateMachine"]
+position = Vector2( -212, -716 )
+script = ExtResource( 1 )
+
+[node name="Braking" type="Node2D" parent="StateMachine"]
+position = Vector2( -212, -716 )
+script = ExtResource( 4 )
+
+[node name="Air" type="Node2D" parent="StateMachine"]
+script = ExtResource( 2 )
+
+[node name="Skin" type="Sprite" parent="."]
+texture = ExtResource( 6 )
+hframes = 10
+vframes = 10
+script = ExtResource( 10 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Skin"]
+anims/idle = SubResource( 4 )
+anims/peel_out = SubResource( 5 )
+anims/rolling = SubResource( 6 )
+anims/running = SubResource( 7 )
+anims/skidding = SubResource( 8 )
+anims/walking = SubResource( 9 )
+
+[node name="AnimationTree" type="AnimationTree" parent="Skin"]
+tree_root = SubResource( 20 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/ground/current = 0
+parameters/ground_time/scale = 1.0
+parameters/rolling_time/scale = 1.0
+parameters/root_state/current = 0

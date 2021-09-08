@@ -1,0 +1,117 @@
+[gd_resource type="Resource" load_steps=20 format=2]
+
+[ext_resource path="res://sprites/ghz/left.png" type="Texture" id=1]
+[ext_resource path="res://sprites/ghz/right.png" type="Texture" id=2]
+[ext_resource path="res://sprites/ghz/top.png" type="Texture" id=3]
+[ext_resource path="res://sprites/ghz/fill.png" type="Texture" id=4]
+[ext_resource path="res://sprites/ghz/top_right.png" type="Texture" id=5]
+[ext_resource path="res://sprites/ghz/top_left.png" type="Texture" id=6]
+[ext_resource path="res://addons/rmsmartshape/materials/shape_material.gd" type="Script" id=7]
+[ext_resource path="res://addons/rmsmartshape/materials/edge_material.gd" type="Script" id=8]
+[ext_resource path="res://addons/rmsmartshape/normal_range.gd" type="Script" id=9]
+[ext_resource path="res://addons/rmsmartshape/materials/edge_material_metadata.gd" type="Script" id=10]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 8 )
+textures = [ ExtResource( 3 ) ]
+texture_normals = [  ]
+textures_corner_outer = [  ]
+textures_corner_inner = [  ]
+texture_normals_corner_outer = [  ]
+texture_normals_corner_inner = [  ]
+textures_taper_left = [ ExtResource( 6 ) ]
+textures_taper_right = [ ExtResource( 5 ) ]
+texture_normals_taper_left = [  ]
+texture_normals_taper_right = [  ]
+use_corner_texture = true
+use_taper_texture = true
+fit_mode = 1
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 9 )
+begin = 66.0
+distance = 51.0
+edgeRendering = Vector2( 0, 0 )
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 10 )
+edge_material = SubResource( 1 )
+normal_range = SubResource( 2 )
+weld = true
+render = true
+z_index = 0
+z_as_relative = true
+offset = -0.3
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 8 )
+textures = [ ExtResource( 1 ) ]
+texture_normals = [  ]
+textures_corner_outer = [  ]
+textures_corner_inner = [  ]
+texture_normals_corner_outer = [  ]
+texture_normals_corner_inner = [  ]
+textures_taper_left = [  ]
+textures_taper_right = [  ]
+texture_normals_taper_left = [  ]
+texture_normals_taper_right = [  ]
+use_corner_texture = true
+use_taper_texture = true
+fit_mode = 0
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 9 )
+begin = 158.0
+distance = 45.0
+edgeRendering = Vector2( 0, 0 )
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 10 )
+edge_material = SubResource( 4 )
+normal_range = SubResource( 5 )
+weld = false
+render = true
+z_index = -1
+z_as_relative = true
+offset = -1.0
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 8 )
+textures = [ ExtResource( 2 ) ]
+texture_normals = [  ]
+textures_corner_outer = [  ]
+textures_corner_inner = [  ]
+texture_normals_corner_outer = [  ]
+texture_normals_corner_inner = [  ]
+textures_taper_left = [  ]
+textures_taper_right = [  ]
+texture_normals_taper_left = [  ]
+texture_normals_taper_right = [  ]
+use_corner_texture = true
+use_taper_texture = true
+fit_mode = 0
+
+[sub_resource type="Resource" id=8]
+script = ExtResource( 9 )
+begin = 343.0
+distance = 35.0
+edgeRendering = Vector2( 0, 0 )
+
+[sub_resource type="Resource" id=9]
+script = ExtResource( 10 )
+edge_material = SubResource( 7 )
+normal_range = SubResource( 8 )
+weld = true
+render = true
+z_index = -1
+z_as_relative = true
+offset = -1.0
+
+[resource]
+script = ExtResource( 7 )
+_edge_meta_materials = [ SubResource( 3 ), SubResource( 6 ), SubResource( 9 ) ]
+fill_textures = [ ExtResource( 4 ) ]
+fill_texture_normals = [  ]
+fill_texture_z_index = -10
+fill_mesh_offset = 0.0
+render_offset = 0.0

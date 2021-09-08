@@ -1,0 +1,314 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "PlayerState",
+"class": "AirPlayerState",
+"language": "GDScript",
+"path": "res://scripts/player/states/air_player_state.gd"
+}, {
+"base": "PlayerState",
+"class": "BrakingPlayerState",
+"language": "GDScript",
+"path": "res://scripts/player/states/braking_player_state.gd"
+}, {
+"base": "Node2D",
+"class": "DiagonalSpring",
+"language": "GDScript",
+"path": "res://scripts/spring/diagonal_spring.gd"
+}, {
+"base": "Node",
+"class": "GoPhysics",
+"language": "GDScript",
+"path": "res://scripts/general/go_physics.gd"
+}, {
+"base": "Node",
+"class": "GoUtils",
+"language": "GDScript",
+"path": "res://scripts/general/go_utils.gd"
+}, {
+"base": "Node2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://scripts/player/player.gd"
+}, {
+"base": "Resource",
+"class": "PlayerCollision",
+"language": "GDScript",
+"path": "res://scripts/player/resources/player_collision.gd"
+}, {
+"base": "Sprite",
+"class": "PlayerSkin",
+"language": "GDScript",
+"path": "res://scripts/player/player_skin.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerState",
+"language": "GDScript",
+"path": "res://scripts/player/player_state.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerStateMachine",
+"language": "GDScript",
+"path": "res://scripts/player/player_state_machine.gd"
+}, {
+"base": "Resource",
+"class": "PlayerStats",
+"language": "GDScript",
+"path": "res://scripts/player/resources/player_stats.gd"
+}, {
+"base": "Resource",
+"class": "RMS2D_Material",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/RMSmartShapeMaterial.gd"
+}, {
+"base": "Reference",
+"class": "RMS2D_VertexProperties",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/LEGACY_vertex_properties.gd"
+}, {
+"base": "Reference",
+"class": "RMS2D_VertexPropertiesArray",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/LEGACY_vertex_properties_array.gd"
+}, {
+"base": "Node2D",
+"class": "RMSmartShape2D",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/RMSmartShape2D.gd"
+}, {
+"base": "Node2D",
+"class": "RMSmartShapeAnchor2D",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/RMSmartShapeAnchor2D.gd"
+}, {
+"base": "PlayerState",
+"class": "RegularPlayerState",
+"language": "GDScript",
+"path": "res://scripts/player/states/regular_player_state.gd"
+}, {
+"base": "PlayerState",
+"class": "RollingPlayerState",
+"language": "GDScript",
+"path": "res://scripts/player/states/rolling_player_state.gd"
+}, {
+"base": "Node",
+"class": "SS2D_Common_Functions",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/common_functions.gd"
+}, {
+"base": "Reference",
+"class": "SS2D_Edge",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/edge.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Material_Edge",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/materials/edge_material.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Material_Edge_Metadata",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/materials/edge_material_metadata.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Material_Shape",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/materials/shape_material.gd"
+}, {
+"base": "Reference",
+"class": "SS2D_Mesh",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/mesh.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_NormalRange",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/normal_range.gd"
+}, {
+"base": "VBoxContainer",
+"class": "SS2D_NormalRangeEditor",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/editors/NormalRangeEditor/NormalRangeEditor.gd"
+}, {
+"base": "EditorProperty",
+"class": "SS2D_NormalRangeEditorProperty",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/editors/NormalRangeEditor/NormalRangeEditorProperty.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Point",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/point.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Point_Array",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/point_array.gd"
+}, {
+"base": "Reference",
+"class": "SS2D_Quad",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/quad.gd"
+}, {
+"base": "Node2D",
+"class": "SS2D_Shape_Anchor",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_anchor.gd"
+}, {
+"base": "Node2D",
+"class": "SS2D_Shape_Base",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_base.gd"
+}, {
+"base": "SS2D_Shape_Base",
+"class": "SS2D_Shape_Closed",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_closed.gd"
+}, {
+"base": "Node2D",
+"class": "SS2D_Shape_Combine_Union",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_combine_union.gd"
+}, {
+"base": "SS2D_Shape_Base",
+"class": "SS2D_Shape_Meta",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_meta.gd"
+}, {
+"base": "SS2D_Shape_Base",
+"class": "SS2D_Shape_Open",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_open.gd"
+}, {
+"base": "Node2D",
+"class": "SS2D_Shape_Render",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/shapes/shape_render.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_Strings",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/strings.gd"
+}, {
+"base": "Resource",
+"class": "SS2D_VertexProperties",
+"language": "GDScript",
+"path": "res://addons/rmsmartshape/vertex_properties.gd"
+}, {
+"base": "StaticBody2D",
+"class": "SolidObject",
+"language": "GDScript",
+"path": "res://scripts/nodes/solid_object.gd"
+}, {
+"base": "Node2D",
+"class": "Spring",
+"language": "GDScript",
+"path": "res://scripts/spring/spring.gd"
+} ]
+_global_script_class_icons={
+"AirPlayerState": "",
+"BrakingPlayerState": "",
+"DiagonalSpring": "",
+"GoPhysics": "",
+"GoUtils": "",
+"Player": "",
+"PlayerCollision": "",
+"PlayerSkin": "",
+"PlayerState": "",
+"PlayerStateMachine": "",
+"PlayerStats": "",
+"RMS2D_Material": "",
+"RMS2D_VertexProperties": "",
+"RMS2D_VertexPropertiesArray": "",
+"RMSmartShape2D": "res://addons/rmsmartshape/assets/LEGACY_shape.png",
+"RMSmartShapeAnchor2D": "res://addons/rmsmartshape/assets/LEGACY_shape_anchor.png",
+"RegularPlayerState": "",
+"RollingPlayerState": "",
+"SS2D_Common_Functions": "",
+"SS2D_Edge": "",
+"SS2D_Material_Edge": "",
+"SS2D_Material_Edge_Metadata": "",
+"SS2D_Material_Shape": "",
+"SS2D_Mesh": "",
+"SS2D_NormalRange": "",
+"SS2D_NormalRangeEditor": "",
+"SS2D_NormalRangeEditorProperty": "",
+"SS2D_Point": "",
+"SS2D_Point_Array": "",
+"SS2D_Quad": "",
+"SS2D_Shape_Anchor": "res://addons/rmsmartshape/assets/Anchor.svg",
+"SS2D_Shape_Base": "",
+"SS2D_Shape_Closed": "res://addons/rmsmartshape/assets/closed_shape.png",
+"SS2D_Shape_Combine_Union": "",
+"SS2D_Shape_Meta": "res://addons/rmsmartshape/assets/meta_shape.png",
+"SS2D_Shape_Open": "res://addons/rmsmartshape/assets/open_shape.png",
+"SS2D_Shape_Render": "",
+"SS2D_Strings": "",
+"SS2D_VertexProperties": "",
+"SolidObject": "",
+"Spring": ""
+}
+
+[application]
+
+config/name="GoSonic2D"
+run/main_scene="res://scenes/main.tscn"
+config/icon="res://icon.png"
+
+[display]
+
+window/size/width=426
+window/size/height=240
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_height"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/rmsmartshape/plugin.cfg" )
+
+[input]
+
+player_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777231,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_a={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+2d/snapping/use_gpu_pixel_snap=true
+environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=false

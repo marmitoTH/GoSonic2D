@@ -1,0 +1,64 @@
+extends Camera2D
+
+export(NodePath) var player_path
+
+export(float) var max_offset = 16
+
+export(float) var right_margin = 0
+export(float) var left_margin = -16
+export(float) var top_margin = -32
+export(float) var bottom_margin = 32
+
+onready var player = get_node(player_path) as Player
+
+func _ready():
+	initialize_camera()
+
+func _process(_delta):
+	handle_horizontal_borders()
+	handle_vertical_borders()
+
+func initialize_camera():
+	current = true
+	position = player.position
+
+func handle_horizontal_borders():
+	var pivot_offset = player.current_bounds.offset
+	var target = player.position.x + pivot_offset.x
+	
+	if target > position.x + right_margin:
+		var offset = target - position.x - right_margin
+		position.x += min(offset, max_offset)
+	
+	if target < position.x + left_margin:
+		var offset = target - position.x - left_margin
+		position.x += max(offset, -max_offset)
+
+func handle_vertical_borders():
+	var pivot_offset = player.current_bounds.offset
+	var target = player.position.y + pivot_offset.y
+	
+	if player.is_grounded:
+		var offset = target - position.y
+		position.y += clamp(offset, -max_offset, max_offset * 0.5)
+	else:
+		if target < position.y + top_margin :
+			var offset = target - position.y - top_margin
+			position.y += max(offset, -max_offset)
+		
+		if target > position.y + bottom_margin:
+			var offset = target - position.y - bottom_margin
+			position.y += min(offset, max_offset)
+
+func _draw():
+	var right = Vector2.RIGHT * right_margin
+	var left = Vector2.RIGHT * left_margin
+	var top_left = Vector2.UP * -top_margin + left
+	var top_right = Vector2.UP * -top_margin + right
+	var bottom_left = Vector2.DOWN * bottom_margin + left
+	var bottom_right = Vector2.DOWN * bottom_margin + right
+	draw_line(top_left, bottom_left, Color.white)
+	draw_line(top_right, bottom_right, Color.white)
+	draw_line(top_left, top_right, Color.white)
+	draw_line(bottom_left, bottom_right, Color.white)
+	draw_line(right, left, Color.green)

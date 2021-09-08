@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/spring/diagonal_spring.gd" type="Script" id=1]
+[ext_resource path="res://sprites/springs/yellow_spring_diagonal.png" type="Texture" id=2]
+
+[node name="YellowDiagonalSpringDownLeft" type="Node2D"]
+script = ExtResource( 1 )
+positive = false
+type = 1
+
+[node name="sprite" type="Sprite" parent="."]
+position = Vector2( -7, 7 )
+texture = ExtResource( 2 )
+flip_h = true
+flip_v = true
+hframes = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( 16, -16, -16, -16, -16, -8, 8, 16, 16, 16 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

@@ -1,0 +1,290 @@
+extends Node2D
+
+class_name Player
+
+export(Array, Resource) var bounds
+export(Array, Resource) var stats
+
+onready var skin = $Skin as PlayerSkin
+onready var state_machine = $StateMachine as PlayerStateMachine
+
+var world : World2D
+var current_bounds : PlayerCollision
+var current_stats : PlayerStats
+
+var collider : Area2D
+var collider_shape : RectangleShape2D
+
+var velocity : Vector2
+var ground_normal : Vector2
+var input_direction : Vector2
+var last_position : Vector2
+
+var ground_angle : float
+var absolute_ground_angle : float
+var input_dot_velocity: float
+var control_lock_timer : float
+
+var is_grounded : bool
+var is_jumping : bool
+var is_rolling : bool
+var is_control_locked : bool
+
+func _ready():
+	initialize_collider()
+	initialize_resources()
+	initialize_state_machine()
+	initialize_skin()
+
+func _physics_process(delta):
+	handle_input()
+	handle_control_lock(delta)
+	handle_state_update(delta)
+	handle_ground_detach()
+	handle_motion(delta)
+	handle_state_animation(delta)
+	handle_skin(delta)
+	update()
+
+func initialize_collider():
+	var collision = CollisionShape2D.new()
+	collider_shape = RectangleShape2D.new()
+	collider = Area2D.new()
+	collision.shape = collider_shape
+	collider.add_child(collision)
+	add_child(collider)
+
+func initialize_resources():
+	world = get_world_2d()
+	set_bounds(0)
+	set_stats(0)
+
+func initialize_state_machine():
+	state_machine.initialize()
+
+func initialize_skin():
+	remove_child(skin)
+	get_tree().root.call_deferred("add_child", skin)
+
+func set_bounds(index: int):
+	if index >= 0 and index < bounds.size():
+		var last_bounds = current_bounds
+		current_bounds = bounds[index]
+		collider_shape.extents.x = current_bounds.width_radius + current_bounds.push_radius
+		collider_shape.extents.y = current_bounds.height_radius
+		position -= current_bounds.offset
+		
+		if last_bounds and last_bounds != current_bounds:
+			position += last_bounds.offset
+
+func set_stats(index: int):
+	if index >= 0 and index < bounds.size():
+		current_stats = stats[index]
+
+func handle_state_update(delta: float):
+	state_machine.update_state(delta)
+
+func handle_ground_detach():
+	if is_grounded and velocity.y < 0:
+		exit_ground()
+
+func handle_motion(delta: float):
+	var offset = velocity.length() * delta
+	var max_motion_size = current_bounds.width_radius
+	var motion_steps = abs(int(offset / max_motion_size)) + 1
+	var step_motion = velocity / motion_steps
+
+	while motion_steps > 0:
+		set_velocity(step_motion, delta)
+		handle_collision()
+		motion_steps -= 1
+
+func handle_collision():
+	handle_overlaps()
+	handle_wall_collision()
+	handle_ground_collision()
+	handle_ceiling_collision()
+
+func handle_state_animation(delta):
+	state_machine.animate_state(delta)
+
+func handle_skin(delta):
+	skin.position = position
+	
+	if not is_rolling:
+		if not is_grounded:
+			var current_rotation = skin.rotation_degrees
+			skin.rotation_degrees = move_toward(current_rotation, 0, 360 * delta)
+		else:
+			skin.rotation_degrees = ground_angle if abs(ground_angle) > 10 else .0
+	else:
+		skin.rotation_degrees = 0
+
+func handle_overlaps():
+	var overlaps = GoPhysics.overlap_shape(world, collider_shape, position, rotation)
+	for overlap in overlaps:
+		if overlap.collider is SolidObject:
+			overlap.collider.emit_signal("player_overlap", self)
+
+func handle_wall_collision():
+	var ray_size = current_bounds.width_radius + current_bounds.push_radius
+	var origin = position + transform.y * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else position
+	var right_ray = GoPhysics.cast_ray(world, origin, transform.x, ray_size)
+	var left_ray = GoPhysics.cast_ray(world, origin, -transform.x, ray_size)
+
+	if right_ray or left_ray:
+		if right_ray:
+			velocity.x = min(velocity.x, 0)
+			position -= transform.x * (right_ray.penetration + GoPhysics.EPSILON)
+		
+		if left_ray:
+			velocity.x = max(velocity.x, 0)
+			position += transform.x * (left_ray.penetration + GoPhysics.EPSILON)
+
+func handle_ceiling_collision():
+	var ray_size = current_bounds.height_radius
+	var ray_offset = transform.x * current_bounds.width_radius
+	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, -transform.y, ray_size)
+	
+	if hits and not is_grounded and velocity.y <= 0:
+		var ceiling_normal = hits.closest_hit.normal
+		var ceiling_angle = GoUtils.get_angle_from(ceiling_normal)
+
+		if ceiling_angle < 136:
+			set_ground_data(ceiling_normal)
+			rotate_to(ceiling_angle)
+			enter_ground()
+		else:
+			velocity.y = 0
+		
+		position += transform.y * hits.closest_hit.penetration
+
+func handle_ground_collision():
+	var ray_offset = transform.x * current_bounds.width_radius
+	var ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
+	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, transform.y, ray_size)
+
+	if hits:
+		if not is_grounded:
+			if velocity.y >= 0:
+				set_ground_data(hits.closest_hit.normal)
+				rotate_to(ground_angle)
+				position -= transform.y * hits.closest_hit.penetration
+				enter_ground()
+		elif hits.left_hit and hits.right_hit:
+			set_ground_data(hits.closest_hit.normal)
+			rotate_to(ground_angle)
+			position -= transform.y * (hits.closest_hit.penetration - current_bounds.ground_extension)
+	else:
+		exit_ground()
+
+func set_velocity(desired_velocity: Vector2, delta: float):
+	if is_grounded:
+		var ground_velocity = GoUtils.get_ground_velocity(desired_velocity, ground_normal)
+		position += ground_velocity * delta
+	else:
+		position += desired_velocity * delta
+
+func set_ground_data(normal: Vector2):
+	ground_normal = normal
+	ground_angle = GoUtils.get_angle_from(normal)
+	absolute_ground_angle = abs(ground_angle)
+
+func rotate_to(angle: float):
+	var closest_angle = stepify(angle, 90)
+	rotation_degrees = closest_angle
+
+func handle_input():
+	var right = Input.is_action_pressed("player_right")
+	var left = Input.is_action_pressed("player_left")
+	var up = Input.is_action_pressed("player_up")
+	var down = Input.is_action_pressed("player_down")
+	var horizontal = 1 if right else (-1 if left else 0)
+	var vertical = 1 if up else (-1 if down else 0)
+	horizontal = 0 if is_control_locked else horizontal
+	input_direction = Vector2(horizontal, vertical)
+	input_dot_velocity = input_direction.dot(velocity)
+
+func lock_controls():
+	if not is_control_locked:
+		input_direction.x = 0
+		is_control_locked = true
+		control_lock_timer = current_stats.control_lock_duration
+
+func unlock_controls():
+	if is_control_locked:
+		is_control_locked = false
+		control_lock_timer = 0
+
+func handle_control_lock(delta: float):
+	if is_control_locked:
+		input_direction.x = 0
+		if is_grounded:
+			control_lock_timer -= delta
+			if abs(velocity.x) == 0 or control_lock_timer <= 0:
+				unlock_controls()
+
+func handle_fall():
+	if is_grounded and absolute_ground_angle > current_stats.slide_angle and abs(velocity.x) <= current_stats.min_speed_to_fall:
+		lock_controls()
+
+		if absolute_ground_angle > current_stats.fall_angle:
+			exit_ground()
+
+func handle_slope(delta: float):
+	if is_grounded:
+		var down_hill = velocity.dot(ground_normal) > 0
+		var rolling_factor = current_stats.slope_roll_down if down_hill else current_stats.slope_roll_up
+		var amount = rolling_factor if is_rolling else current_stats.slope_factor
+		velocity.x += amount * ground_normal.x * delta
+
+func handle_gravity(delta: float):
+	if not is_grounded:
+		velocity.y += current_stats.gravity * delta
+
+func handle_acceleration(delta: float):
+	var absolute_speed = abs(velocity.x)
+
+	if absolute_speed < current_stats.top_speed and (not is_rolling or not is_grounded):
+		var amount = current_stats.acceleration if is_grounded else current_stats.air_acceleration
+		velocity.x += input_direction.x * amount * delta
+		velocity.x = clamp(velocity.x, -current_stats.top_speed, current_stats.top_speed)
+
+func handle_deceleration(delta: float):
+	velocity.x = move_toward(velocity.x, 0, current_stats.deceleration * delta)
+
+func handle_friction(delta: float):
+	if is_grounded and (input_direction.x == 0 or is_rolling):
+		var amount = current_stats.roll_friction if is_rolling else current_stats.friction
+		velocity.x = move_toward(velocity.x, 0, amount * delta)
+
+func handle_jump():
+	if is_grounded and Input.is_action_just_pressed("player_a"):
+		is_jumping = true
+		velocity.y = -current_stats.max_jump_height
+	
+	if is_jumping and Input.is_action_just_released("player_a") and velocity.y < -current_stats.min_jump_height:
+		velocity.y = -current_stats.min_jump_height
+
+func enter_ground():
+	if not is_grounded:
+		is_jumping = false
+		is_grounded = true
+		velocity = GoUtils.global_to_ground_velocity(velocity, ground_normal)
+
+func exit_ground():
+	if is_grounded:
+		is_grounded = false
+		velocity = GoUtils.get_global_velocity(velocity, ground_normal)
+		rotate_to(0)
+
+func _draw():
+	var ground_ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
+	var horizontal_origin = Vector2.ZERO - Vector2.UP * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else Vector2.ZERO
+
+	draw_line(horizontal_origin, horizontal_origin + Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.crimson)
+	draw_line(horizontal_origin, horizontal_origin - Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.hotpink)
+	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.cyan)
+	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.green)
+	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.yellow)
+	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.blue)
