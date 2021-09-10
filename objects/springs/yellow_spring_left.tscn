@@ -4,7 +4,7 @@
 [ext_resource path="res://scripts/nodes/solid_object.gd" type="Script" id=2]
 [ext_resource path="res://sprites/springs/yellow_spring_horizontal.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=97]
+[sub_resource type="Animation" id=1]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -19,7 +19,7 @@ tracks/0/keys = {
 "values": [ 1 ]
 }
 
-[sub_resource type="Animation" id=98]
+[sub_resource type="Animation" id=2]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -34,25 +34,25 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=86]
+[sub_resource type="AnimationNodeAnimation" id=3]
 animation = "activate"
 
-[sub_resource type="AnimationNodeAnimation" id=87]
+[sub_resource type="AnimationNodeAnimation" id=4]
 animation = "idle"
 
-[sub_resource type="AnimationNodeOneShot" id=88]
+[sub_resource type="AnimationNodeOneShot" id=5]
 
-[sub_resource type="AnimationNodeBlendTree" id=89]
+[sub_resource type="AnimationNodeBlendTree" id=6]
 graph_offset = Vector2( -454, 76 )
-nodes/Animation/node = SubResource( 87 )
+nodes/Animation/node = SubResource( 4 )
 nodes/Animation/position = Vector2( -180, 100 )
-"nodes/Animation 2/node" = SubResource( 86 )
+"nodes/Animation 2/node" = SubResource( 3 )
 "nodes/Animation 2/position" = Vector2( -180, 240 )
-nodes/OneShot/node = SubResource( 88 )
+nodes/OneShot/node = SubResource( 5 )
 nodes/OneShot/position = Vector2( 80, 120 )
 node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation", "OneShot", 1, "Animation 2" ]
 
-[sub_resource type="RectangleShape2D" id=96]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 8, 16 )
 
 [node name="YellowSpringLeft" type="Node2D"]
@@ -67,11 +67,11 @@ flip_h = true
 hframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sprite"]
-anims/activate = SubResource( 97 )
-anims/idle = SubResource( 98 )
+anims/activate = SubResource( 1 )
+anims/idle = SubResource( 2 )
 
 [node name="AnimationTree" type="AnimationTree" parent="sprite"]
-tree_root = SubResource( 89 )
+tree_root = SubResource( 6 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/OneShot/active = false
@@ -81,6 +81,7 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SolidObject"]
 position = Vector2( 8, 0 )
-shape = SubResource( 96 )
+shape = SubResource( 7 )
 
-[connection signal="player_overlap" from="SolidObject" to="." method="_on_SolidObject_player_overlap"]
+[connection signal="player_left_wall_collision" from="SolidObject" to="." method="_on_SolidObject_player_left_wall_collision"]
+[connection signal="player_right_wall_collision" from="SolidObject" to="." method="_on_SolidObject_player_right_wall_collision"]

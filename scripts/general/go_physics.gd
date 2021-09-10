@@ -4,16 +4,16 @@ class_name GoPhysics
 
 const EPSILON = 0.001
 
-static func cast_ray(world: World2D, origin: Vector2, direction: Vector2, length: float) -> Dictionary:
+static func cast_ray(world: World2D, origin: Vector2, direction: Vector2, length: float, exclude: Array = [], layer: int = 1) -> Dictionary:
 	var destination = origin + direction * length
 	var space_state = world.direct_space_state
-	var result = space_state.intersect_ray(origin, destination)
+	var result = space_state.intersect_ray(origin, destination, exclude, layer)
 	var penetration = destination.distance_to(result.position) if result else 0
-	return { 'position': result.position, 'normal': result.normal, 'penetration': penetration } if result else {}
+	return { 'position': result.position, 'normal': result.normal, 'penetration': penetration, 'collider': result.collider } if result else {}
 
-static func cast_parallel_rays(world: World2D, origin: Vector2, offset: Vector2, direction: Vector2, length: float) -> Dictionary:
-	var right_ray = cast_ray(world, origin + offset, direction, length)
-	var left_ray = cast_ray(world, origin - offset, direction, length)
+static func cast_parallel_rays(world: World2D, origin: Vector2, offset: Vector2, direction: Vector2, length: float, exclude: Array = [], layer: int = 1) -> Dictionary:
+	var right_ray = cast_ray(world, origin + offset, direction, length, exclude, layer)
+	var left_ray = cast_ray(world, origin - offset, direction, length, exclude, layer)
 
 	if right_ray or left_ray:
 		var closest_ray = right_ray if right_ray else left_ray

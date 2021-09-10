@@ -5,6 +5,10 @@ class_name Player
 export(Array, Resource) var bounds
 export(Array, Resource) var stats
 
+export(int, LAYERS_2D_PHYSICS) var wall_layer = 1
+export(int, LAYERS_2D_PHYSICS) var ground_layer = 1
+export(int, LAYERS_2D_PHYSICS) var ceiling_layer = 1
+
 onready var skin = $Skin as PlayerSkin
 onready var state_machine = $StateMachine as PlayerStateMachine
 
@@ -40,11 +44,10 @@ func _physics_process(delta):
 	handle_input()
 	handle_control_lock(delta)
 	handle_state_update(delta)
-	handle_ground_detach()
 	handle_motion(delta)
 	handle_state_animation(delta)
 	handle_skin(delta)
-	update()
+	#update()
 
 func initialize_collider():
 	var collision = CollisionShape2D.new()
@@ -84,10 +87,6 @@ func set_stats(index: int):
 func handle_state_update(delta: float):
 	state_machine.update_state(delta)
 
-func handle_ground_detach():
-	if is_grounded and velocity.y < 0:
-		exit_ground()
-
 func handle_motion(delta: float):
 	var offset = velocity.length() * delta
 	var max_motion_size = current_bounds.width_radius
@@ -100,7 +99,6 @@ func handle_motion(delta: float):
 		motion_steps -= 1
 
 func handle_collision():
-	handle_overlaps()
 	handle_wall_collision()
 	handle_ground_collision()
 	handle_ceiling_collision()
@@ -120,63 +118,75 @@ func handle_skin(delta):
 	else:
 		skin.rotation_degrees = 0
 
-func handle_overlaps():
-	var overlaps = GoPhysics.overlap_shape(world, collider_shape, position, rotation)
-	for overlap in overlaps:
-		if overlap.collider is SolidObject:
-			overlap.collider.emit_signal("player_overlap", self)
-
 func handle_wall_collision():
 	var ray_size = current_bounds.width_radius + current_bounds.push_radius
 	var origin = position + transform.y * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else position
-	var right_ray = GoPhysics.cast_ray(world, origin, transform.x, ray_size)
-	var left_ray = GoPhysics.cast_ray(world, origin, -transform.x, ray_size)
+	var right_ray = GoPhysics.cast_ray(world, origin, transform.x, ray_size, [self], wall_layer)
+	var left_ray = GoPhysics.cast_ray(world, origin, -transform.x, ray_size, [self], wall_layer)
 
 	if right_ray or left_ray:
 		if right_ray:
-			velocity.x = min(velocity.x, 0)
-			position -= transform.x * (right_ray.penetration + GoPhysics.EPSILON)
+			handle_contact(right_ray, "player_right_wall_collision")
+			
+			if not right_ray.collider is SolidObject or right_ray.collider.is_enabled():
+				velocity.x = min(velocity.x, 0)
+				position -= transform.x * (right_ray.penetration + GoPhysics.EPSILON)
 		
 		if left_ray:
-			velocity.x = max(velocity.x, 0)
-			position += transform.x * (left_ray.penetration + GoPhysics.EPSILON)
+			handle_contact(left_ray, "player_left_wall_collision")
+			
+			if not left_ray.collider is SolidObject or left_ray.collider.is_enabled():
+				velocity.x = max(velocity.x, 0)
+				position += transform.x * (left_ray.penetration + GoPhysics.EPSILON)
 
 func handle_ceiling_collision():
 	var ray_size = current_bounds.height_radius
 	var ray_offset = transform.x * current_bounds.width_radius
-	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, -transform.y, ray_size)
+	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, -transform.y, ray_size, [self], ceiling_layer)
 	
-	if hits and not is_grounded and velocity.y <= 0:
-		var ceiling_normal = hits.closest_hit.normal
-		var ceiling_angle = GoUtils.get_angle_from(ceiling_normal)
-
-		if ceiling_angle < 136:
-			set_ground_data(ceiling_normal)
-			rotate_to(ceiling_angle)
-			enter_ground()
-		else:
-			velocity.y = 0
+	if hits:
+		handle_contact(hits.closest_hit, "player_ceiling_collision")
 		
-		position += transform.y * hits.closest_hit.penetration
+		if not is_grounded and velocity.y <= 0:
+			if not hits.closest_hit.collider is SolidObject or hits.closest_hit.collider.is_enabled():
+				var ceiling_normal = hits.closest_hit.normal
+				var ceiling_angle = GoUtils.get_angle_from(ceiling_normal)
+			
+				if ceiling_angle < 136:
+					set_ground_data(ceiling_normal)
+					rotate_to(ceiling_angle)
+					enter_ground()
+				else:
+					velocity.y = 0
+			
+				position += transform.y * hits.closest_hit.penetration
 
 func handle_ground_collision():
 	var ray_offset = transform.x * current_bounds.width_radius
 	var ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
-	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, transform.y, ray_size)
+	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, transform.y, ray_size, [self], ground_layer)
 
 	if hits:
-		if not is_grounded:
-			if velocity.y >= 0:
+		handle_contact(hits.closest_hit, "player_ground_collision")
+		
+		if not hits.closest_hit.collider is SolidObject or hits.closest_hit.collider.is_enabled():
+			if not is_grounded:
+				if velocity.y >= 0:
+					set_ground_data(hits.closest_hit.normal)
+					rotate_to(ground_angle)
+					position -= transform.y * hits.closest_hit.penetration
+					enter_ground()
+			elif hits.left_hit and hits.right_hit:
+				var safe_distance = hits.closest_hit.penetration - current_bounds.ground_extension
 				set_ground_data(hits.closest_hit.normal)
 				rotate_to(ground_angle)
-				position -= transform.y * hits.closest_hit.penetration
-				enter_ground()
-		elif hits.left_hit and hits.right_hit:
-			set_ground_data(hits.closest_hit.normal)
-			rotate_to(ground_angle)
-			position -= transform.y * (hits.closest_hit.penetration - current_bounds.ground_extension)
+				position -= transform.y * safe_distance
 	else:
 		exit_ground()
+
+func handle_contact(contact: Dictionary, signal_name: String):
+	if contact.collider is SolidObject:
+			contact.collider.emit_signal(signal_name, self)
 
 func set_velocity(desired_velocity: Vector2, delta: float):
 	if is_grounded:
@@ -243,15 +253,19 @@ func handle_gravity(delta: float):
 		velocity.y += current_stats.gravity * delta
 
 func handle_acceleration(delta: float):
-	var absolute_speed = abs(velocity.x)
-
-	if absolute_speed < current_stats.top_speed and (not is_rolling or not is_grounded):
-		var amount = current_stats.acceleration if is_grounded else current_stats.air_acceleration
-		velocity.x += input_direction.x * amount * delta
-		velocity.x = clamp(velocity.x, -current_stats.top_speed, current_stats.top_speed)
+	if input_direction.x != 0:
+		if sign(input_direction.x) == sign(velocity.x) or not is_grounded:
+			var amount = current_stats.acceleration if is_grounded else current_stats.air_acceleration
+			if abs(velocity.x) < current_stats.top_speed:
+				velocity.x += input_direction.x * amount * delta
+				velocity.x = clamp(velocity.x, -current_stats.top_speed, current_stats.top_speed)
+		else:
+			velocity.x += input_direction.x * current_stats.deceleration * delta
 
 func handle_deceleration(delta: float):
-	velocity.x = move_toward(velocity.x, 0, current_stats.deceleration * delta)
+	if input_direction.x != 0 and sign(input_direction.x) != sign(velocity.x):
+		var amount = current_stats.roll_deceleration if is_rolling else current_stats.deceleration
+		velocity.x = move_toward(velocity.x, 0, amount * delta)
 
 func handle_friction(delta: float):
 	if is_grounded and (input_direction.x == 0 or is_rolling):
@@ -260,8 +274,10 @@ func handle_friction(delta: float):
 
 func handle_jump():
 	if is_grounded and Input.is_action_just_pressed("player_a"):
+		exit_ground()
 		is_jumping = true
-		velocity.y = -current_stats.max_jump_height
+		is_rolling = true
+		velocity += ground_normal * current_stats.max_jump_height
 	
 	if is_jumping and Input.is_action_just_released("player_a") and velocity.y < -current_stats.min_jump_height:
 		velocity.y = -current_stats.min_jump_height
@@ -278,13 +294,13 @@ func exit_ground():
 		velocity = GoUtils.get_global_velocity(velocity, ground_normal)
 		rotate_to(0)
 
-func _draw():
-	var ground_ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
-	var horizontal_origin = Vector2.ZERO - Vector2.UP * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else Vector2.ZERO
-
-	draw_line(horizontal_origin, horizontal_origin + Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.crimson)
-	draw_line(horizontal_origin, horizontal_origin - Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.hotpink)
-	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.cyan)
-	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.green)
-	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.yellow)
-	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.blue)
+#func _draw():
+#	var ground_ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
+#	var horizontal_origin = Vector2.ZERO - Vector2.UP * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else Vector2.ZERO
+#
+#	draw_line(horizontal_origin, horizontal_origin + Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.crimson)
+#	draw_line(horizontal_origin, horizontal_origin - Vector2.RIGHT * (current_bounds.width_radius + current_bounds.push_radius), Color.hotpink)
+#	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.cyan)
+#	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius - Vector2.UP * ground_ray_size, Color.green)
+#	draw_line(Vector2.RIGHT * current_bounds.width_radius, Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.yellow)
+#	draw_line(-Vector2.RIGHT * current_bounds.width_radius, -Vector2.RIGHT * current_bounds.width_radius + Vector2.UP * current_bounds.height_radius, Color.blue)
