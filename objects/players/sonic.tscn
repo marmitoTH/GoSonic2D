@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scripts/player/states/rolling_player_state.gd" type="Script" id=1]
 [ext_resource path="res://scripts/player/states/air_player_state.gd" type="Script" id=2]
@@ -146,13 +146,13 @@ tracks/0/keys = {
 "values": [ 13, 14, 15, 16, 17, 18, 19, 20 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=10]
+[sub_resource type="AnimationNodeAnimation" id=21]
 animation = "walking"
 
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "running"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=22]
 animation = "rolling"
 
 [sub_resource type="AnimationNodeAnimation" id=13]
@@ -161,11 +161,13 @@ animation = "peel_out"
 [sub_resource type="AnimationNodeAnimation" id=14]
 animation = "skidding"
 
-[sub_resource type="AnimationNodeAnimation" id=15]
+[sub_resource type="AnimationNodeAnimation" id=23]
 animation = "idle"
 
-[sub_resource type="AnimationNodeTransition" id=16]
-input_count = 4
+[sub_resource type="AnimationNodeTimeScale" id=24]
+
+[sub_resource type="AnimationNodeTransition" id=19]
+input_count = 6
 input_0/name = "idle"
 input_0/auto_advance = false
 input_1/name = "walking"
@@ -174,44 +176,31 @@ input_2/name = "running"
 input_2/auto_advance = false
 input_3/name = "peel_out"
 input_3/auto_advance = false
-
-[sub_resource type="AnimationNodeTimeScale" id=17]
-
-[sub_resource type="AnimationNodeTimeScale" id=18]
-
-[sub_resource type="AnimationNodeTransition" id=19]
-input_count = 3
-input_0/name = "ground"
-input_0/auto_advance = false
-input_1/name = "rolling"
-input_1/auto_advance = false
-input_2/name = "skidding"
-input_2/auto_advance = false
+input_4/name = "rolling"
+input_4/auto_advance = false
+input_5/name = "skidding"
+input_5/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( -449, 141 )
-nodes/Animation/node = SubResource( 15 )
-nodes/Animation/position = Vector2( -380, 140 )
-"nodes/Animation 2/node" = SubResource( 10 )
-"nodes/Animation 2/position" = Vector2( -380, 260 )
+graph_offset = Vector2( -363, 72.6864 )
+nodes/Animation/node = SubResource( 23 )
+nodes/Animation/position = Vector2( -140, 160 )
+"nodes/Animation 2/node" = SubResource( 21 )
+"nodes/Animation 2/position" = Vector2( -140, 280 )
 "nodes/Animation 3/node" = SubResource( 11 )
-"nodes/Animation 3/position" = Vector2( -380, 380 )
-"nodes/Animation 4/node" = SubResource( 12 )
-"nodes/Animation 4/position" = Vector2( -140, 520 )
+"nodes/Animation 3/position" = Vector2( -140, 400 )
+"nodes/Animation 4/node" = SubResource( 22 )
+"nodes/Animation 4/position" = Vector2( -140, 640 )
 "nodes/Animation 5/node" = SubResource( 13 )
-"nodes/Animation 5/position" = Vector2( -380, 500 )
+"nodes/Animation 5/position" = Vector2( -140, 520 )
 "nodes/Animation 6/node" = SubResource( 14 )
-"nodes/Animation 6/position" = Vector2( 80, 580 )
-nodes/ground/node = SubResource( 16 )
-nodes/ground/position = Vector2( -140, 260 )
-nodes/ground_time/node = SubResource( 17 )
-nodes/ground_time/position = Vector2( 80, 300 )
-nodes/output/position = Vector2( 520, 400 )
-nodes/rolling_time/node = SubResource( 18 )
-nodes/rolling_time/position = Vector2( 80, 440 )
-nodes/root_state/node = SubResource( 19 )
-nodes/root_state/position = Vector2( 340, 400 )
-node_connections = [ "output", 0, "root_state", "ground", 0, "Animation", "ground", 1, "Animation 2", "ground", 2, "Animation 3", "ground", 3, "Animation 5", "ground_time", 0, "ground", "rolling_time", 0, "Animation 4", "root_state", 0, "ground_time", "root_state", 1, "rolling_time", "root_state", 2, "Animation 6" ]
+"nodes/Animation 6/position" = Vector2( -140, 760 )
+nodes/output/position = Vector2( 580, 380 )
+nodes/speed/node = SubResource( 24 )
+nodes/speed/position = Vector2( 400, 380 )
+nodes/state/node = SubResource( 19 )
+nodes/state/position = Vector2( 220, 380 )
+node_connections = [ "speed", 0, "state", "state", 0, "Animation", "state", 1, "Animation 2", "state", 2, "Animation 3", "state", 3, "Animation 5", "state", 4, "Animation 4", "state", 5, "Animation 6", "output", 0, "speed" ]
 
 [node name="Sonic" type="Node2D"]
 script = ExtResource( 9 )
@@ -253,7 +242,5 @@ anims/walking = SubResource( 9 )
 tree_root = SubResource( 20 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/ground/current = 0
-parameters/ground_time/scale = 1.0
-parameters/rolling_time/scale = 1.0
-parameters/root_state/current = 0
+parameters/speed/scale = 1.0
+parameters/state/current = 0

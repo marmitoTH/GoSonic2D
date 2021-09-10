@@ -11,7 +11,7 @@ func step(player: Player, delta: float):
 	player.handle_gravity(delta)
 	player.handle_jump()
 	player.handle_slope(delta)
-	player.handle_acceleration(delta)
+	player.handle_deceleration(delta)
 	player.handle_friction(delta)
 	
 	if player.is_grounded:
@@ -21,5 +21,5 @@ func step(player: Player, delta: float):
 		player.state_machine.change_state("Air")
 
 func animate(player: Player, _delta: float):
-	player.skin.set_rolling_time(max(4 / 60.0 + abs(player.velocity.x) / 120.0, 1.0))
-	player.skin.set_root_state(PlayerSkin.ROOT_STATES.rolling)
+	player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)
+	player.skin.set_animation_speed(max(4 / 60.0 + abs(player.velocity.x) / 120.0, 1.0))

@@ -5,8 +5,7 @@ class_name AirPlayerState
 var last_absolute_horizontal_speed : float
 
 func enter(player: Player):
-	if player.is_jumping:
-		player.is_rolling = true
+	if player.is_rolling:
 		player.set_bounds(1)
 		last_absolute_horizontal_speed = abs(player.velocity.x)
 
@@ -24,6 +23,6 @@ func step(player: Player, delta: float):
 func animate(player: Player, _delta: float):
 	player.skin.handle_flip(player.input_direction.x)
 
-	if not player.is_grounded and player.is_rolling:
-		player.skin.set_rolling_time(max(4 / 60.0 + last_absolute_horizontal_speed / 120.0, 1.0))
-		player.skin.set_root_state(PlayerSkin.ROOT_STATES.rolling)
+	if player.is_rolling:
+		player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)
+		player.skin.set_animation_speed(max(4 / 60.0 + last_absolute_horizontal_speed / 120.0, 1.0))
