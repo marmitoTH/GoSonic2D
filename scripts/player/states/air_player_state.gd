@@ -26,3 +26,5 @@ func animate(player: Player, _delta: float):
 	if player.is_rolling:
 		player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)
 		player.skin.set_animation_speed(max(4 / 60.0 + last_absolute_horizontal_speed / 120.0, 1.0))
+	elif abs(player.velocity.x) < 355:
+		player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.walking)

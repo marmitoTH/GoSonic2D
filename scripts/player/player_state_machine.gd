@@ -10,7 +10,8 @@ onready var states = {
 	"Regular": $Regular,
 	"Rolling": $Rolling,
 	"Braking": $Braking,
-	"Air": $Air
+	"Air": $Air,
+	"Spring": $Spring
 }
 
 var current_state

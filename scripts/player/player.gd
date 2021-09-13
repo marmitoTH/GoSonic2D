@@ -11,6 +11,7 @@ export(int, LAYERS_2D_PHYSICS) var ceiling_layer = 1
 
 onready var skin = $Skin as PlayerSkin
 onready var state_machine = $StateMachine as PlayerStateMachine
+onready var initial_parent = get_parent()
 
 var world : World2D
 var current_bounds : PlayerCollision
@@ -22,7 +23,6 @@ var collider_shape : RectangleShape2D
 var velocity : Vector2
 var ground_normal : Vector2
 var input_direction : Vector2
-var last_position : Vector2
 
 var ground_angle : float
 var absolute_ground_angle : float
@@ -90,11 +90,11 @@ func handle_state_update(delta: float):
 func handle_motion(delta: float):
 	var offset = velocity.length() * delta
 	var max_motion_size = current_bounds.width_radius
-	var motion_steps = abs(int(offset / max_motion_size)) + 1
+	var motion_steps = int(offset / max_motion_size) + 1
 	var step_motion = velocity / motion_steps
 
 	while motion_steps > 0:
-		set_velocity(step_motion, delta)
+		apply_motion(step_motion, delta)
 		handle_collision()
 		motion_steps -= 1
 
@@ -107,9 +107,9 @@ func handle_state_animation(delta):
 	state_machine.animate_state(delta)
 
 func handle_skin(delta):
-	skin.position = position
+	skin.position = global_position
 	
-	if not is_rolling:
+	if not is_rolling and abs(velocity.x) > 0:
 		if not is_grounded:
 			var current_rotation = skin.rotation_degrees
 			skin.rotation_degrees = move_toward(current_rotation, 0, 360 * delta)
@@ -120,7 +120,7 @@ func handle_skin(delta):
 
 func handle_wall_collision():
 	var ray_size = current_bounds.width_radius + current_bounds.push_radius
-	var origin = position + transform.y * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else position
+	var origin = global_position + transform.y * current_bounds.push_height_offset if is_grounded and absolute_ground_angle < 1 else global_position
 	var right_ray = GoPhysics.cast_ray(world, origin, transform.x, ray_size, [self], wall_layer)
 	var left_ray = GoPhysics.cast_ray(world, origin, -transform.x, ray_size, [self], wall_layer)
 
@@ -142,7 +142,7 @@ func handle_wall_collision():
 func handle_ceiling_collision():
 	var ray_size = current_bounds.height_radius
 	var ray_offset = transform.x * current_bounds.width_radius
-	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, -transform.y, ray_size, [self], ceiling_layer)
+	var hits = GoPhysics.cast_parallel_rays(world, global_position, ray_offset, -transform.y, ray_size, [self], ceiling_layer)
 	
 	if hits:
 		handle_contact(hits.closest_hit, "player_ceiling_collision")
@@ -164,10 +164,11 @@ func handle_ceiling_collision():
 func handle_ground_collision():
 	var ray_offset = transform.x * current_bounds.width_radius
 	var ray_size = current_bounds.height_radius + current_bounds.ground_extension if is_grounded else current_bounds.height_radius
-	var hits = GoPhysics.cast_parallel_rays(world, position, ray_offset, transform.y, ray_size, [self], ground_layer)
+	var hits = GoPhysics.cast_parallel_rays(world, global_position, ray_offset, transform.y, ray_size, [self], ground_layer)
 
 	if hits:
 		handle_contact(hits.closest_hit, "player_ground_collision")
+		handle_platform(hits.closest_hit.collider)
 		
 		if not hits.closest_hit.collider is SolidObject or hits.closest_hit.collider.is_enabled():
 			if not is_grounded:
@@ -188,10 +189,16 @@ func handle_contact(contact: Dictionary, signal_name: String):
 	if contact.collider is SolidObject:
 			contact.collider.emit_signal(signal_name, self)
 
-func set_velocity(desired_velocity: Vector2, delta: float):
+func handle_platform(platform_collider: StaticBody2D):
+	if is_grounded and platform_collider is SolidObject:
+		reparent(platform_collider)
+	else:
+		reparent(initial_parent)
+
+func apply_motion(desired_velocity: Vector2, delta: float):
 	if is_grounded:
-		var ground_velocity = GoUtils.get_ground_velocity(desired_velocity, ground_normal)
-		position += ground_velocity * delta
+		var global_velocity = GoUtils.ground_to_global_velocity(desired_velocity, ground_normal)
+		position += global_velocity * delta
 	else:
 		position += desired_velocity * delta
 
@@ -282,6 +289,14 @@ func handle_jump():
 	if is_jumping and Input.is_action_just_released("player_a") and velocity.y < -current_stats.min_jump_height:
 		velocity.y = -current_stats.min_jump_height
 
+func reparent(new_parent: Node):
+	var current_parent = get_parent()
+	if new_parent != current_parent:
+		var old_transform = global_transform
+		current_parent.remove_child(self)
+		new_parent.add_child(self)
+		global_transform = old_transform
+
 func enter_ground():
 	if not is_grounded:
 		is_jumping = false
@@ -291,7 +306,8 @@ func enter_ground():
 func exit_ground():
 	if is_grounded:
 		is_grounded = false
-		velocity = GoUtils.get_global_velocity(velocity, ground_normal)
+		reparent(initial_parent)
+		velocity = GoUtils.ground_to_global_velocity(velocity, ground_normal)
 		rotate_to(0)
 
 #func _draw():

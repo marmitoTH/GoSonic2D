@@ -20,11 +20,11 @@ func _process(_delta):
 
 func initialize_camera():
 	current = true
-	position = player.position
+	position = player.global_position
 
 func handle_horizontal_borders():
 	var pivot_offset = player.current_bounds.offset
-	var target = player.position.x + pivot_offset.x
+	var target = player.global_position.x + pivot_offset.x
 	
 	if target > position.x + right_margin:
 		var offset = target - position.x - right_margin
@@ -36,7 +36,7 @@ func handle_horizontal_borders():
 
 func handle_vertical_borders():
 	var pivot_offset = player.current_bounds.offset
-	var target = player.position.y + pivot_offset.y
+	var target = player.global_position.y + pivot_offset.y
 	
 	if player.is_grounded:
 		var offset = target - position.y
@@ -50,15 +50,15 @@ func handle_vertical_borders():
 			var offset = target - position.y - bottom_margin
 			position.y += min(offset, max_offset)
 
-func _draw():
-	var right = Vector2.RIGHT * right_margin
-	var left = Vector2.RIGHT * left_margin
-	var top_left = Vector2.UP * -top_margin + left
-	var top_right = Vector2.UP * -top_margin + right
-	var bottom_left = Vector2.DOWN * bottom_margin + left
-	var bottom_right = Vector2.DOWN * bottom_margin + right
-	draw_line(top_left, bottom_left, Color.white)
-	draw_line(top_right, bottom_right, Color.white)
-	draw_line(top_left, top_right, Color.white)
-	draw_line(bottom_left, bottom_right, Color.white)
-	draw_line(right, left, Color.green)
+#func _draw():
+#	var right = Vector2.RIGHT * right_margin
+#	var left = Vector2.RIGHT * left_margin
+#	var top_left = Vector2.UP * -top_margin + left
+#	var top_right = Vector2.UP * -top_margin + right
+#	var bottom_left = Vector2.DOWN * bottom_margin + left
+#	var bottom_right = Vector2.DOWN * bottom_margin + right
+#	draw_line(top_left, bottom_left, Color.white)
+#	draw_line(top_right, bottom_right, Color.white)
+#	draw_line(top_left, top_right, Color.white)
+#	draw_line(bottom_left, bottom_right, Color.white)
+#	draw_line(right, left, Color.green)
