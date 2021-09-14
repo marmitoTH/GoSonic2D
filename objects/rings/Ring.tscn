@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/rings/ring.gd" type="Script" id=1]
+[ext_resource path="res://objects/audios/RingAudio.tscn" type="PackedScene" id=2]
+[ext_resource path="res://sprites/rings/ring.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "rotate"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "rotate"
+
+[sub_resource type="AnimationNodeBlendTree" id=3]
+graph_offset = Vector2( -232, 74 )
+nodes/Animation/node = SubResource( 2 )
+nodes/Animation/position = Vector2( 100, 120 )
+node_connections = [ "output", 0, "Animation" ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 8, 8 )
+
+[node name="Ring" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+hframes = 8
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/rotate = SubResource( 1 )
+
+[node name="AnimationTree" type="AnimationTree" parent="Sprite"]
+tree_root = SubResource( 3 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 4 )
+
+[node name="RingAudio" parent="." instance=ExtResource( 2 )]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
