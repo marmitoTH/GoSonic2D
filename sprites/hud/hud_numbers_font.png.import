@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/small_counter.png-69ac04e0b93297a233fc64a9a88f16a1.stex"
+path="res://.import/hud_numbers_font.png-e566c4211ed33eb237d67feab02fa30f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/small_counter.png"
-dest_files=[ "res://.import/small_counter.png-69ac04e0b93297a233fc64a9a88f16a1.stex" ]
+source_file="res://sprites/hud/hud_numbers_font.png"
+dest_files=[ "res://.import/hud_numbers_font.png-e566c4211ed33eb237d67feab02fa30f.stex" ]
 
 [params]
 
