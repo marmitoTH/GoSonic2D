@@ -2,7 +2,7 @@ extends Node2D
 
 export(float) var move_height = 50
 export(float) var move_speed = 130
-export(float) var visible_time = 2
+export(float) var visible_time = 1
 
 var destination: Vector2
 var movement: bool
