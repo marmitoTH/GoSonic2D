@@ -2,15 +2,15 @@ info face="hud_numbers"
 common lineHeight=13
 page id=0 file="../sprites/hud/hud_numbers_font.png"
 chars count=11
-char id=32    x=75    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=4    page=0    chnl=15
+char id=56    x=67    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=48    x=3     y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
-char id=49    x=12    y=2    width=5    height=13    xoffset=0    yoffset=0    xadvance=6    page=0    chnl=15
+char id=32    x=59    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=4    page=0    chnl=15
+char id=57    x=75    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
+char id=49    x=11    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=50    x=19    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=51    x=27    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=52    x=35    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=53    x=43    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
-char id=54    x=52    y=2    width=6    height=13    xoffset=0    yoffset=0    xadvance=7    page=0    chnl=15
+char id=54    x=51    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 char id=55    x=59    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
-char id=56    x=67    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
-char id=57    x=75    y=2    width=7    height=13    xoffset=0    yoffset=0    xadvance=8    page=0    chnl=15
 kernings count=0

@@ -1,0 +1,138 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/hud/hud_warning.gd" type="Script" id=1]
+[ext_resource path="res://sprites/hud/hud.png" type="Texture" id=2]
+[ext_resource path="res://sprites/hud/sonic.png" type="Texture" id=3]
+[ext_resource path="res://sprites/hud/hud_time_warning.png" type="Texture" id=4]
+[ext_resource path="res://sprites/hud/hud_rings_warning.png" type="Texture" id=5]
+[ext_resource path="res://fonts/hud_numbers.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://scripts/hud/hud.gd" type="Script" id=7]
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="TextureRect" parent="."]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 98.0
+margin_bottom = 58.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="Score"]
+margin_left = 40.0
+margin_top = 1.0
+margin_right = 104.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rings" type="Label" parent="Score"]
+margin_left = 40.0
+margin_top = 33.0
+margin_right = 80.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Control" parent="Score"]
+margin_left = 48.0
+margin_top = 16.0
+margin_right = 104.0
+margin_bottom = 32.0
+
+[node name="Minutes" type="Label" parent="Score/Timer"]
+margin_left = -8.0
+margin_top = 1.0
+margin_right = 8.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Seconds" type="Label" parent="Score/Timer"]
+margin_left = 16.0
+margin_top = 1.0
+margin_right = 32.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 6 )
+text = "00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Milliseconds" type="Label" parent="Score/Timer"]
+margin_left = 40.0
+margin_top = 1.0
+margin_right = 56.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 6 )
+text = "00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warnings" type="Control" parent="Score"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="TextureRect" parent="Score/Warnings"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rings" type="TextureRect" parent="Score/Warnings"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 5 )
+
+[node name="Lifes" type="TextureRect" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = -32.0
+margin_right = 56.0
+margin_bottom = -12.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Counter" type="Label" parent="Lifes"]
+margin_left = 20.0
+margin_top = 5.0
+margin_right = 40.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 6 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

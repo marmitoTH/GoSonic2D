@@ -1,0 +1,86 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/debug/debug_hud.gd" type="Script" id=1]
+[ext_resource path="res://fonts/system.fnt" type="BitmapFont" id=2]
+
+[node name="Debug" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+player_path = NodePath("../../Sonic")
+
+[node name="Labels" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -117.0
+margin_top = 13.0
+margin_right = -17.0
+margin_bottom = 65.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.878431, 0.894118, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "xpos
+ypos
+xsp
+ysp"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="XPOS" type="Label" parent="Labels"]
+margin_left = 36.0
+margin_right = 100.0
+margin_bottom = 8.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.878431, 0.894118, 0.878431, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0.00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="YPOS" type="Label" parent="Labels"]
+margin_left = 36.0
+margin_top = 11.0
+margin_right = 100.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.878431, 0.894118, 0.878431, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0.00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="XSP" type="Label" parent="Labels"]
+margin_left = 36.0
+margin_top = 21.0
+margin_right = 100.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.878431, 0.894118, 0.878431, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0.00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="YSP" type="Label" parent="Labels"]
+margin_left = 36.0
+margin_top = 32.0
+margin_right = 100.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.878431, 0.894118, 0.878431, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0.00"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
