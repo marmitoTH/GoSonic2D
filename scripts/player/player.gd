@@ -152,7 +152,7 @@ func handle_ceiling_collision():
 				var ceiling_normal = hits.closest_hit.normal
 				var ceiling_angle = GoUtils.get_angle_from(ceiling_normal)
 			
-				if ceiling_angle < 136:
+				if abs(ceiling_angle) < 135:
 					set_ground_data(ceiling_normal)
 					rotate_to(ceiling_angle)
 					enter_ground()
@@ -177,7 +177,7 @@ func handle_ground_collision():
 					rotate_to(ground_angle)
 					position -= transform.y * hits.closest_hit.penetration
 					enter_ground()
-			elif hits.left_hit and hits.right_hit:
+			elif hits.left_hit or hits.right_hit:
 				var safe_distance = hits.closest_hit.penetration - current_bounds.ground_extension
 				set_ground_data(hits.closest_hit.normal)
 				rotate_to(ground_angle)
