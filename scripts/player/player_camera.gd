@@ -1,15 +1,14 @@
 extends Camera2D
 
-export(NodePath) var player_path
+class_name PlayerCamera
 
 export(float) var max_offset = 16
-
 export(float) var right_margin = 0
 export(float) var left_margin = -16
 export(float) var top_margin = -32
 export(float) var bottom_margin = 32
 
-onready var player = get_node(player_path) as Player
+var player: Player
 
 func _ready():
 	initialize_camera()
@@ -20,7 +19,16 @@ func _process(_delta):
 
 func initialize_camera():
 	current = true
+
+func set_player(desired_player: Player):
+	player = desired_player
 	position = player.global_position
+
+func set_limits(left: int, right: int, top: int, bottom: int):
+	limit_left = left
+	limit_right = right
+	limit_top = top
+	limit_bottom = bottom
 
 func handle_horizontal_borders():
 	var pivot_offset = player.current_bounds.offset

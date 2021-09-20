@@ -2,6 +2,8 @@ extends Node2D
 
 class_name Player
 
+signal ground_enter
+
 export(Array, Resource) var bounds
 export(Array, Resource) var stats
 
@@ -11,6 +13,9 @@ export(int, LAYERS_2D_PHYSICS) var ceiling_layer = 1
 
 onready var skin = $Skin as PlayerSkin
 onready var state_machine = $StateMachine as PlayerStateMachine
+onready var shields = $Shields as ShieldsManager
+onready var audios = $Audios as PlayerAudio
+
 onready var initial_parent = get_parent()
 
 var world : World2D
@@ -29,10 +34,14 @@ var absolute_ground_angle : float
 var input_dot_velocity: float
 var control_lock_timer : float
 
+var limit_left: float
+var limit_right: float
+
 var is_grounded : bool
 var is_jumping : bool
 var is_rolling : bool
 var is_control_locked : bool
+var is_locked_to_limits: bool
 
 func _ready():
 	initialize_collider()
@@ -45,6 +54,7 @@ func _physics_process(delta):
 	handle_control_lock(delta)
 	handle_state_update(delta)
 	handle_motion(delta)
+	handle_limits()
 	handle_state_animation(delta)
 	handle_skin(delta)
 	#update()
@@ -102,6 +112,16 @@ func handle_collision():
 	handle_wall_collision()
 	handle_ground_collision()
 	handle_ceiling_collision()
+
+func handle_limits():
+	if is_locked_to_limits:
+		var offset = current_bounds.width_radius
+		if position.x + offset > limit_right:
+			position.x = limit_right - offset
+			velocity.x = 0
+		if position.x - offset < limit_left:
+			position.x = limit_left + offset
+			velocity.x = 0
 
 func handle_state_animation(delta):
 	state_machine.animate_state(delta)
@@ -284,10 +304,16 @@ func handle_jump():
 		exit_ground()
 		is_jumping = true
 		is_rolling = true
+		audios.jump_audio.play()
 		velocity += ground_normal * current_stats.max_jump_height
 	
 	if is_jumping and Input.is_action_just_released("player_a") and velocity.y < -current_stats.min_jump_height:
 		velocity.y = -current_stats.min_jump_height
+
+func lock_to_limits(left: float, right: float):
+	limit_left = left
+	limit_right = right
+	is_locked_to_limits = true
 
 func reparent(new_parent: Node):
 	var current_parent = get_parent()
@@ -302,6 +328,7 @@ func enter_ground():
 		is_jumping = false
 		is_grounded = true
 		velocity = GoUtils.global_to_ground_velocity(velocity, ground_normal)
+		emit_signal("ground_enter")
 
 func exit_ground():
 	if is_grounded:

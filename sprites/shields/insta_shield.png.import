@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/solid_tiles.png-a84e57856a084f0aa311cb46fec19d75.stex"
+path="res://.import/insta_shield.png-df0867a53099662df2a7e87cbd81871f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/tiles/solid_tiles.png"
-dest_files=[ "res://.import/solid_tiles.png-a84e57856a084f0aa311cb46fec19d75.stex" ]
+source_file="res://sprites/shields/insta_shield.png"
+dest_files=[ "res://.import/insta_shield.png-df0867a53099662df2a7e87cbd81871f.stex" ]
 
 [params]
 

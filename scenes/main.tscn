@@ -1,64 +1,613 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://objects/players/sonic.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/hud/HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://objects/hud/Debug.tscn" type="PackedScene" id=3]
-[ext_resource path="res://test_level_tile_set.tres" type="TileSet" id=4]
-[ext_resource path="res://objects/activators/UpperTileActivatorSmall.tscn" type="PackedScene" id=5]
-[ext_resource path="res://objects/activators/LowerTileActivatorBig.tscn" type="PackedScene" id=6]
-[ext_resource path="res://objects/activators/UpperTileActivatorBig.tscn" type="PackedScene" id=7]
-[ext_resource path="res://objects/activators/LowerTileActivatorSmall.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scripts/player/player_camera.gd" type="Script" id=17]
+[ext_resource path="res://tilemaps/isolated_island.tres" type="TileSet" id=4]
+[ext_resource path="res://sprites/zones/isolated_island/isolated_island_details.png" type="Texture" id=5]
+[ext_resource path="res://scripts/zone/zone.gd" type="Script" id=6]
+[ext_resource path="res://audios/musics/quartz_quadrant_zone_good_future.ogg" type="AudioStream" id=7]
+[ext_resource path="res://objects/players/camera.tscn" type="PackedScene" id=8]
+[ext_resource path="res://objects/springs/yellow_spring_up.tscn" type="PackedScene" id=9]
+[ext_resource path="res://objects/rings/Ring.tscn" type="PackedScene" id=10]
+[ext_resource path="res://objects/monitors/RingMonitor.tscn" type="PackedScene" id=11]
 
-[node name="Stage" type="Node2D"]
+[sub_resource type="TileSet" id=1]
+0/name = "isolated_island_details.png 0"
+0/texture = ExtResource( 5 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "isolated_island_details.png 1"
+1/texture = ExtResource( 5 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 64, 0, 48, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "isolated_island_details.png 2"
+2/texture = ExtResource( 5 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 112, 0, 16, 48 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "isolated_island_details.png 3"
+3/texture = ExtResource( 5 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 128, 0, 16, 32 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "isolated_island_details.png 4"
+4/texture = ExtResource( 5 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 64, 128, 80 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "isolated_island_details.png 5"
+5/texture = ExtResource( 5 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 112, 48, 16, 16 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
+6/name = "isolated_island_details.png 6"
+6/texture = ExtResource( 5 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 128, 48, 16, 16 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape_one_way = false
+6/shape_one_way_margin = 0.0
+6/shapes = [  ]
+6/z_index = 0
+7/name = "isolated_island_details.png 7"
+7/texture = ExtResource( 5 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 144, 0, 32, 32 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
+8/name = "isolated_island_details.png 8"
+8/texture = ExtResource( 5 )
+8/tex_offset = Vector2( 0, 0 )
+8/modulate = Color( 1, 1, 1, 1 )
+8/region = Rect2( 176, 0, 32, 32 )
+8/tile_mode = 0
+8/occluder_offset = Vector2( 0, 0 )
+8/navigation_offset = Vector2( 0, 0 )
+8/shape_offset = Vector2( 0, 0 )
+8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+8/shape_one_way = false
+8/shape_one_way_margin = 0.0
+8/shapes = [  ]
+8/z_index = 0
+9/name = "isolated_island_details.png 9"
+9/texture = ExtResource( 5 )
+9/tex_offset = Vector2( 0, 0 )
+9/modulate = Color( 1, 1, 1, 1 )
+9/region = Rect2( 208, 0, 32, 32 )
+9/tile_mode = 0
+9/occluder_offset = Vector2( 0, 0 )
+9/navigation_offset = Vector2( 0, 0 )
+9/shape_offset = Vector2( 0, 0 )
+9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+9/shape_one_way = false
+9/shape_one_way_margin = 0.0
+9/shapes = [  ]
+9/z_index = 0
+10/name = "isolated_island_details.png 10"
+10/texture = ExtResource( 5 )
+10/tex_offset = Vector2( 0, 0 )
+10/modulate = Color( 1, 1, 1, 1 )
+10/region = Rect2( 240, 0, 32, 32 )
+10/tile_mode = 0
+10/occluder_offset = Vector2( 0, 0 )
+10/navigation_offset = Vector2( 0, 0 )
+10/shape_offset = Vector2( 0, 0 )
+10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+10/shape_one_way = false
+10/shape_one_way_margin = 0.0
+10/shapes = [  ]
+10/z_index = 0
+11/name = "isolated_island_details.png 11"
+11/texture = ExtResource( 5 )
+11/tex_offset = Vector2( 0, 0 )
+11/modulate = Color( 1, 1, 1, 1 )
+11/region = Rect2( 144, 32, 32, 32 )
+11/tile_mode = 0
+11/occluder_offset = Vector2( 0, 0 )
+11/navigation_offset = Vector2( 0, 0 )
+11/shape_offset = Vector2( 0, 0 )
+11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+11/shape_one_way = false
+11/shape_one_way_margin = 0.0
+11/shapes = [  ]
+11/z_index = 0
+12/name = "isolated_island_details.png 12"
+12/texture = ExtResource( 5 )
+12/tex_offset = Vector2( 0, 0 )
+12/modulate = Color( 1, 1, 1, 1 )
+12/region = Rect2( 176, 32, 32, 32 )
+12/tile_mode = 0
+12/occluder_offset = Vector2( 0, 0 )
+12/navigation_offset = Vector2( 0, 0 )
+12/shape_offset = Vector2( 0, 0 )
+12/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+12/shape_one_way = false
+12/shape_one_way_margin = 0.0
+12/shapes = [  ]
+12/z_index = 0
+13/name = "isolated_island_details.png 13"
+13/texture = ExtResource( 5 )
+13/tex_offset = Vector2( 0, 0 )
+13/modulate = Color( 1, 1, 1, 1 )
+13/region = Rect2( 208, 32, 32, 32 )
+13/tile_mode = 0
+13/occluder_offset = Vector2( 0, 0 )
+13/navigation_offset = Vector2( 0, 0 )
+13/shape_offset = Vector2( 0, 0 )
+13/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+13/shape_one_way = false
+13/shape_one_way_margin = 0.0
+13/shapes = [  ]
+13/z_index = 0
+14/name = "isolated_island_details.png 14"
+14/texture = ExtResource( 5 )
+14/tex_offset = Vector2( 0, 0 )
+14/modulate = Color( 1, 1, 1, 1 )
+14/region = Rect2( 240, 32, 32, 32 )
+14/tile_mode = 0
+14/occluder_offset = Vector2( 0, 0 )
+14/navigation_offset = Vector2( 0, 0 )
+14/shape_offset = Vector2( 0, 0 )
+14/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+14/shape_one_way = false
+14/shape_one_way_margin = 0.0
+14/shapes = [  ]
+14/z_index = 0
+15/name = "isolated_island_details.png 15"
+15/texture = ExtResource( 5 )
+15/tex_offset = Vector2( 0, 0 )
+15/modulate = Color( 1, 1, 1, 1 )
+15/region = Rect2( 144, 64, 32, 32 )
+15/tile_mode = 0
+15/occluder_offset = Vector2( 0, 0 )
+15/navigation_offset = Vector2( 0, 0 )
+15/shape_offset = Vector2( 0, 0 )
+15/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+15/shape_one_way = false
+15/shape_one_way_margin = 0.0
+15/shapes = [  ]
+15/z_index = 0
+16/name = "isolated_island_details.png 16"
+16/texture = ExtResource( 5 )
+16/tex_offset = Vector2( 0, 0 )
+16/modulate = Color( 1, 1, 1, 1 )
+16/region = Rect2( 176, 64, 32, 32 )
+16/tile_mode = 0
+16/occluder_offset = Vector2( 0, 0 )
+16/navigation_offset = Vector2( 0, 0 )
+16/shape_offset = Vector2( 0, 0 )
+16/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+16/shape_one_way = false
+16/shape_one_way_margin = 0.0
+16/shapes = [  ]
+16/z_index = 0
+17/name = "isolated_island_details.png 17"
+17/texture = ExtResource( 5 )
+17/tex_offset = Vector2( 0, 0 )
+17/modulate = Color( 1, 1, 1, 1 )
+17/region = Rect2( 208, 64, 32, 32 )
+17/tile_mode = 0
+17/occluder_offset = Vector2( 0, 0 )
+17/navigation_offset = Vector2( 0, 0 )
+17/shape_offset = Vector2( 0, 0 )
+17/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+17/shape_one_way = false
+17/shape_one_way_margin = 0.0
+17/shapes = [  ]
+17/z_index = 0
+18/name = "isolated_island_details.png 18"
+18/texture = ExtResource( 5 )
+18/tex_offset = Vector2( 0, 0 )
+18/modulate = Color( 1, 1, 1, 1 )
+18/region = Rect2( 240, 64, 32, 32 )
+18/tile_mode = 0
+18/occluder_offset = Vector2( 0, 0 )
+18/navigation_offset = Vector2( 0, 0 )
+18/shape_offset = Vector2( 0, 0 )
+18/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+18/shape_one_way = false
+18/shape_one_way_margin = 0.0
+18/shapes = [  ]
+18/z_index = 0
+19/name = "isolated_island_details.png 19"
+19/texture = ExtResource( 5 )
+19/tex_offset = Vector2( 0, 0 )
+19/modulate = Color( 1, 1, 1, 1 )
+19/region = Rect2( 144, 96, 32, 32 )
+19/tile_mode = 0
+19/occluder_offset = Vector2( 0, 0 )
+19/navigation_offset = Vector2( 0, 0 )
+19/shape_offset = Vector2( 0, 0 )
+19/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+19/shape_one_way = false
+19/shape_one_way_margin = 0.0
+19/shapes = [  ]
+19/z_index = 0
+20/name = "isolated_island_details.png 20"
+20/texture = ExtResource( 5 )
+20/tex_offset = Vector2( 0, 0 )
+20/modulate = Color( 1, 1, 1, 1 )
+20/region = Rect2( 176, 96, 32, 32 )
+20/tile_mode = 0
+20/occluder_offset = Vector2( 0, 0 )
+20/navigation_offset = Vector2( 0, 0 )
+20/shape_offset = Vector2( 0, 0 )
+20/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+20/shape_one_way = false
+20/shape_one_way_margin = 0.0
+20/shapes = [  ]
+20/z_index = 0
+21/name = "isolated_island_details.png 21"
+21/texture = ExtResource( 5 )
+21/tex_offset = Vector2( 0, 0 )
+21/modulate = Color( 1, 1, 1, 1 )
+21/region = Rect2( 208, 96, 32, 32 )
+21/tile_mode = 0
+21/occluder_offset = Vector2( 0, 0 )
+21/navigation_offset = Vector2( 0, 0 )
+21/shape_offset = Vector2( 0, 0 )
+21/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+21/shape_one_way = false
+21/shape_one_way_margin = 0.0
+21/shapes = [  ]
+21/z_index = 0
+22/name = "isolated_island_details.png 22"
+22/texture = ExtResource( 5 )
+22/tex_offset = Vector2( 0, 0 )
+22/modulate = Color( 1, 1, 1, 1 )
+22/region = Rect2( 240, 96, 32, 32 )
+22/tile_mode = 0
+22/occluder_offset = Vector2( 0, 0 )
+22/navigation_offset = Vector2( 0, 0 )
+22/shape_offset = Vector2( 0, 0 )
+22/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+22/shape_one_way = false
+22/shape_one_way_margin = 0.0
+22/shapes = [  ]
+22/z_index = 0
+23/name = "isolated_island_details.png 23"
+23/texture = ExtResource( 5 )
+23/tex_offset = Vector2( 0, 0 )
+23/modulate = Color( 1, 1, 1, 1 )
+23/region = Rect2( 144, 128, 32, 32 )
+23/tile_mode = 0
+23/occluder_offset = Vector2( 0, 0 )
+23/navigation_offset = Vector2( 0, 0 )
+23/shape_offset = Vector2( 0, 0 )
+23/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+23/shape_one_way = false
+23/shape_one_way_margin = 0.0
+23/shapes = [  ]
+23/z_index = 0
+24/name = "isolated_island_details.png 24"
+24/texture = ExtResource( 5 )
+24/tex_offset = Vector2( 0, 0 )
+24/modulate = Color( 1, 1, 1, 1 )
+24/region = Rect2( 176, 128, 32, 32 )
+24/tile_mode = 0
+24/occluder_offset = Vector2( 0, 0 )
+24/navigation_offset = Vector2( 0, 0 )
+24/shape_offset = Vector2( 0, 0 )
+24/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+24/shape_one_way = false
+24/shape_one_way_margin = 0.0
+24/shapes = [  ]
+24/z_index = 0
+25/name = "isolated_island_details.png 25"
+25/texture = ExtResource( 5 )
+25/tex_offset = Vector2( 0, 0 )
+25/modulate = Color( 1, 1, 1, 1 )
+25/region = Rect2( 208, 128, 32, 32 )
+25/tile_mode = 0
+25/occluder_offset = Vector2( 0, 0 )
+25/navigation_offset = Vector2( 0, 0 )
+25/shape_offset = Vector2( 0, 0 )
+25/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+25/shape_one_way = false
+25/shape_one_way_margin = 0.0
+25/shapes = [  ]
+25/z_index = 0
+26/name = "isolated_island_details.png 26"
+26/texture = ExtResource( 5 )
+26/tex_offset = Vector2( 0, 0 )
+26/modulate = Color( 1, 1, 1, 1 )
+26/region = Rect2( 240, 128, 32, 32 )
+26/tile_mode = 0
+26/occluder_offset = Vector2( 0, 0 )
+26/navigation_offset = Vector2( 0, 0 )
+26/shape_offset = Vector2( 0, 0 )
+26/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+26/shape_one_way = false
+26/shape_one_way_margin = 0.0
+26/shapes = [  ]
+26/z_index = 0
+27/name = "isolated_island_details.png 27"
+27/texture = ExtResource( 5 )
+27/tex_offset = Vector2( 0, 0 )
+27/modulate = Color( 1, 1, 1, 1 )
+27/region = Rect2( 144, 160, 32, 48 )
+27/tile_mode = 0
+27/occluder_offset = Vector2( 0, 0 )
+27/navigation_offset = Vector2( 0, 0 )
+27/shape_offset = Vector2( 0, 0 )
+27/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+27/shape_one_way = false
+27/shape_one_way_margin = 0.0
+27/shapes = [  ]
+27/z_index = 0
+28/name = "isolated_island_details.png 28"
+28/texture = ExtResource( 5 )
+28/tex_offset = Vector2( 0, 0 )
+28/modulate = Color( 1, 1, 1, 1 )
+28/region = Rect2( 176, 160, 32, 48 )
+28/tile_mode = 0
+28/occluder_offset = Vector2( 0, 0 )
+28/navigation_offset = Vector2( 0, 0 )
+28/shape_offset = Vector2( 0, 0 )
+28/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+28/shape_one_way = false
+28/shape_one_way_margin = 0.0
+28/shapes = [  ]
+28/z_index = 0
+29/name = "isolated_island_details.png 29"
+29/texture = ExtResource( 5 )
+29/tex_offset = Vector2( 0, 0 )
+29/modulate = Color( 1, 1, 1, 1 )
+29/region = Rect2( 208, 160, 32, 48 )
+29/tile_mode = 0
+29/occluder_offset = Vector2( 0, 0 )
+29/navigation_offset = Vector2( 0, 0 )
+29/shape_offset = Vector2( 0, 0 )
+29/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+29/shape_one_way = false
+29/shape_one_way_margin = 0.0
+29/shapes = [  ]
+29/z_index = 0
+30/name = "isolated_island_details.png 30"
+30/texture = ExtResource( 5 )
+30/tex_offset = Vector2( 0, 0 )
+30/modulate = Color( 1, 1, 1, 1 )
+30/region = Rect2( 240, 160, 32, 48 )
+30/tile_mode = 0
+30/occluder_offset = Vector2( 0, 0 )
+30/navigation_offset = Vector2( 0, 0 )
+30/shape_offset = Vector2( 0, 0 )
+30/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+30/shape_one_way = false
+30/shape_one_way_margin = 0.0
+30/shapes = [  ]
+30/z_index = 0
+31/name = "isolated_island_details.png 31"
+31/texture = ExtResource( 5 )
+31/tex_offset = Vector2( 0, 0 )
+31/modulate = Color( 1, 1, 1, 1 )
+31/region = Rect2( 0, 144, 16, 16 )
+31/tile_mode = 0
+31/occluder_offset = Vector2( 0, 0 )
+31/navigation_offset = Vector2( 0, 0 )
+31/shape_offset = Vector2( 0, 0 )
+31/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+31/shape_one_way = false
+31/shape_one_way_margin = 0.0
+31/shapes = [  ]
+31/z_index = 0
+32/name = "isolated_island_details.png 32"
+32/texture = ExtResource( 5 )
+32/tex_offset = Vector2( 0, 0 )
+32/modulate = Color( 1, 1, 1, 1 )
+32/region = Rect2( 0, 160, 16, 16 )
+32/tile_mode = 0
+32/occluder_offset = Vector2( 0, 0 )
+32/navigation_offset = Vector2( 0, 0 )
+32/shape_offset = Vector2( 0, 0 )
+32/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+32/shape_one_way = false
+32/shape_one_way_margin = 0.0
+32/shapes = [  ]
+32/z_index = 0
+33/name = "isolated_island_details.png 33"
+33/texture = ExtResource( 5 )
+33/tex_offset = Vector2( 0, 0 )
+33/modulate = Color( 1, 1, 1, 1 )
+33/region = Rect2( 0, 176, 16, 16 )
+33/tile_mode = 0
+33/occluder_offset = Vector2( 0, 0 )
+33/navigation_offset = Vector2( 0, 0 )
+33/shape_offset = Vector2( 0, 0 )
+33/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+33/shape_one_way = false
+33/shape_one_way_margin = 0.0
+33/shapes = [  ]
+33/z_index = 0
+34/name = "isolated_island_details.png 34"
+34/texture = ExtResource( 5 )
+34/tex_offset = Vector2( 0, 0 )
+34/modulate = Color( 1, 1, 1, 1 )
+34/region = Rect2( 0, 192, 16, 16 )
+34/tile_mode = 0
+34/occluder_offset = Vector2( 0, 0 )
+34/navigation_offset = Vector2( 0, 0 )
+34/shape_offset = Vector2( 0, 0 )
+34/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+34/shape_one_way = false
+34/shape_one_way_margin = 0.0
+34/shapes = [  ]
+34/z_index = 0
+35/name = "isolated_island_details.png 35"
+35/texture = ExtResource( 5 )
+35/tex_offset = Vector2( 0, 0 )
+35/modulate = Color( 1, 1, 1, 1 )
+35/region = Rect2( 16, 144, 16, 16 )
+35/tile_mode = 0
+35/occluder_offset = Vector2( 0, 0 )
+35/navigation_offset = Vector2( 0, 0 )
+35/shape_offset = Vector2( 0, 0 )
+35/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+35/shape_one_way = false
+35/shape_one_way_margin = 0.0
+35/shapes = [  ]
+35/z_index = 0
+36/name = "isolated_island_details.png 36"
+36/texture = ExtResource( 5 )
+36/tex_offset = Vector2( 0, 0 )
+36/modulate = Color( 1, 1, 1, 1 )
+36/region = Rect2( 16, 160, 16, 16 )
+36/tile_mode = 0
+36/occluder_offset = Vector2( 0, 0 )
+36/navigation_offset = Vector2( 0, 0 )
+36/shape_offset = Vector2( 0, 0 )
+36/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+36/shape_one_way = false
+36/shape_one_way_margin = 0.0
+36/shapes = [  ]
+36/z_index = 0
 
-[node name="Sonic" parent="." instance=ExtResource( 1 )]
-position = Vector2( 192, 716 )
-ground_layer = 3
+[node name="Zone" type="Node2D"]
+script = ExtResource( 6 )
+player_resource = ExtResource( 1 )
+camera_resource = ExtResource( 8 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource( 17 )
-player_path = NodePath("../Sonic")
+[node name="StartPoint" type="Node2D" parent="."]
+position = Vector2( 104, 716 )
+
+[node name="ZoneMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 2 )]
 
 [node name="Debug" parent="CanvasLayer" instance=ExtResource( 3 )]
-
-[node name="LowerSolidTiles" type="TileMap" parent="."]
-tile_set = ExtResource( 4 )
-cell_size = Vector2( 32, 32 )
-collision_layer = 8
-format = 1
-tile_data = PoolIntArray( 1441901, 9, 0 )
+zone_path = NodePath("../..")
 
 [node name="SolidTiles" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 1114188, 2, 0, 1114192, 2, 0, 1179676, 0, 0, 1179716, 0, 0, 1179720, 0, 0, 1245208, 1, 0, 1245268, 536870917, 0, 1245312, 536870912, 0, 1310720, 0, 0, 1310724, 0, 0, 1310728, 0, 0, 1310732, 0, 0, 1310736, 0, 0, 1310740, 1, 0, 1310752, 2, 0, 1310756, 2, 0, 1310760, 536870913, 0, 1310804, 536870912, 0, 1310829, 11, 0, 1310832, 12, 0, 1376300, 536870913, 0, 1376304, 0, 0, 1376320, 5, 0, 1376332, 6, 0, 1376336, 8, 0, 1376344, 536870913, 0, 1376380, 5, 0, 1441820, 7, 0, 1441844, 536870913, 0, 1441848, 0, 0, 1441860, 18, 0, 1441861, 19, 0, 1441862, 17, 0, 1441863, 7, 0, 1441867, 19, 0, 1441884, 536870913, 0, 1441888, 536870912, 0, 1441916, 0, 0, 1507352, 6, 0, 1507388, 2, 0, 1507392, 2, 0, 1507428, 536870913, 0, 1507432, 536870912, 0, 1507436, 536870912, 0, 1507440, 536870912, 0, 1507444, 0, 0, 1507448, 1, 0, 1507456, 536870916, 0, 1572864, 4, 0, 1572868, 4, 0, 1572872, 3, 0, 1572876, 4, 0, 1572880, 4, 0, 1572884, 6, 0, 1572896, 8, 0, 1572900, 6, 0, 1572904, 6, 0, 1572948, 536870915, 0, 1638444, 8, 0, 1638448, 7, 0, 1638476, 8, 0, 1638480, 6, 0, 1638488, 536870918, 0, 1703988, 6, 0, 1703992, 3, 0, 1704004, 18, 0, 1704005, 17, 0, 1704006, 18, 0, 1704007, 8, 0, 1704011, 18, 0, 1704028, 536870918, 0, 1704032, 536870916, 0, 1704060, 536870915, 0, 1769532, 6, 0, 1769536, 8, 0, 1769572, 536870920, 0, 1769576, 536870916, 0, 1769580, 536870919, 0, 1769584, 536870916, 0, 1769588, 536870916, 0, 1769592, 536870920, 0, 1769600, 536870918, 0 )
+tile_data = PoolIntArray( 1179705, 0, 0, 1179706, 1, 0, 1179710, 1, 0, 1179714, 2, 0, 1310768, 0, 0, 1310769, 1, 0, 1310773, 1, 0, 1310777, 9, 0, 1310778, 8, 0, 1310782, 8, 0, 1310786, 7, 0, 1376292, 3, 0, 1376296, 1, 0, 1376300, 1, 0, 1507327, 0, 0, 1441792, 1, 0, 1441796, 1, 0, 1441800, 1, 0, 1441804, 1, 0, 1441808, 1, 0, 1441812, 1, 0, 1441816, 1, 0, 1441820, 5, 0, 1441824, 5, 0, 1441840, 9, 0, 1441841, 10, 0, 1441845, 8, 0, 1507368, 8, 0, 1507372, 8, 0, 1638399, 7, 0, 1572864, 8, 0, 1572868, 10, 0, 1572872, 8, 0, 1572876, 8, 0, 1572880, 11, 0, 1572884, 8, 0, 1572888, 8, 0, 1572892, 8, 0, 1572896, 10, 0, 1572900, 14, 0, 1572921, 13, 0, 1572922, 14, 0, 1572926, 16, 0, 1572930, 15, 0 )
 
-[node name="Foreground" type="Node2D" parent="."]
-z_index = 2
-
-[node name="SolidTiles" type="TileMap" parent="Foreground"]
+[node name="OneWayTiles" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
+collision_layer = 2
 format = 1
-tile_data = PoolIntArray( 1245293, 13, 0, 1245296, 13, 0 )
+tile_data = PoolIntArray( 1245210, 0, 0, 1245211, 1, 0, 1245215, 2, 0 )
 
-[node name="UpperSolidTiles" type="TileMap" parent="Foreground"]
+[node name="BackgroundTiles" type="TileMap" parent="."]
+z_index = -1
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
-collision_layer = 4
+collision_layer = 0
 format = 1
-tile_data = PoolIntArray( 1441904, 21, 0 )
+tile_data = PoolIntArray( 1376282, 7, 0, 1376283, 8, 0, 1376287, 9, 0 )
 
-[node name="UpperTileActivatorBig" parent="." instance=ExtResource( 7 )]
+[node name="Details" type="TileMap" parent="."]
+z_index = -1
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 1638514, 4, 0, 1769595, 4, 0, 1966160, 4, 0, 1966186, 4, 0, 1966197, 5, 0, 2031733, 5, 0, 2097269, 5, 0, 2097278, 5, 0, 2162694, 4, 0, 2162713, 4, 0, 2162724, 4, 0, 2162753, 4, 0, 2162805, 5, 0, 2162814, 5, 0, 2228310, 4, 0, 2228341, 5, 0, 2228350, 5, 0, 2293843, 5, 0, 2293869, 5, 0, 2293877, 5, 0, 2293886, 5, 0, 2359310, 4, 0, 2359355, 0, 0, 2359379, 5, 0, 2359405, 5, 0, 2359413, 5, 0, 2359422, 5, 0, 2424915, 5, 0, 2424941, 5, 0, 2424949, 6, 0, 2424958, 6, 0, 2490377, 5, 0, 2490396, 5, 0, 2490407, 5, 0, 2490436, 5, 0, 2490451, 5, 0, 2490467, 0, 0, 2490477, 5, 0, 2555913, 5, 0, 2555932, 5, 0, 2555943, 5, 0, 2555972, 5, 0, 2555987, 5, 0, 2555993, 5, 0, 2556013, 5, 0, 2621449, 5, 0, 2621464, 1, 0, 2621468, 5, 0, 2621479, 5, 0, 2621508, 5, 0, 2621519, 0, 0, 2621523, 5, 0, 2621529, 5, 0, 2621549, 5, 0, 2686985, 5, 0, 2686993, 5, 0, 2687004, 5, 0, 2687015, 5, 0, 2687044, 5, 0, 2687059, 5, 0, 2687065, 5, 0, 2687085, 6, 0, 2752513, 1, 0, 2752521, 5, 0, 2752529, 5, 0, 2752540, 5, 0, 2752551, 5, 0, 2752580, 5, 0, 2752595, 5, 0, 2752601, 5, 0, 2818057, 5, 0, 2818065, 5, 0, 2818076, 5, 0, 2818087, 5, 0, 2818116, 5, 0, 2818131, 6, 0, 2818137, 6, 0, 2883593, 5, 0, 2883601, 5, 0, 2883609, 3, 0, 2883612, 5, 0, 2883623, 5, 0, 2883652, 5, 0, 2949129, 6, 0, 2949137, 6, 0, 2949148, 6, 0, 2949159, 6, 0, 2949188, 6, 0 )
 
-[node name="UpperTileActivatorSmall" parent="." instance=ExtResource( 5 )]
+[node name="RingMonitor" parent="." instance=ExtResource( 11 )]
+position = Vector2( 876, 624 )
 
-[node name="LowerTileActivatorSmall" parent="." instance=ExtResource( 8 )]
+[node name="YellowSpringUp" parent="." instance=ExtResource( 9 )]
+position = Vector2( 1100, 560 )
+z_index = -2
 
-[node name="LowerTileActivatorBig" parent="." instance=ExtResource( 6 )]
+[node name="Ring" parent="." instance=ExtResource( 10 )]
+position = Vector2( 700, 632 )
+
+[node name="Ring2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 728, 632 )
+
+[node name="Ring3" parent="." instance=ExtResource( 10 )]
+position = Vector2( 756, 632 )
+
+[node name="Ring4" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 480 )
+
+[node name="Ring5" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 452 )
+
+[node name="Ring6" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 424 )
+
+[node name="Ring7" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 396 )
+
+[node name="Ring8" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 368 )
+
+[node name="Ring9" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1100, 340 )

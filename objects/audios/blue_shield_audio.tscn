@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://audios/effects/blue_shield.wav" type="AudioStream" id=1]
+
+[node name="BlueShieldAudio" type="AudioStreamPlayer"]
+stream = ExtResource( 1 )

@@ -2,7 +2,7 @@ extends Sprite
 
 class_name Particle
 
-export(String) var animation_name
+export(String) var animation_name = "default"
 
 onready var animation_player = $AnimationPlayer
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://audios/spring.wav" type="AudioStream" id=1]
+[ext_resource path="res://audios/effects/spring.wav" type="AudioStream" id=1]
 
 [node name="SpringAudio" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )

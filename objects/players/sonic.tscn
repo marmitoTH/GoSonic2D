@@ -1,16 +1,25 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://scripts/player/states/rolling_player_state.gd" type="Script" id=1]
 [ext_resource path="res://scripts/player/states/air_player_state.gd" type="Script" id=2]
 [ext_resource path="res://scripts/player/states/regular_player_state.gd" type="Script" id=3]
 [ext_resource path="res://scripts/player/states/braking_player_state.gd" type="Script" id=4]
 [ext_resource path="res://scripts/player/resources/player_stats.gd" type="Script" id=5]
-[ext_resource path="res://sprites/sonic.png" type="Texture" id=6]
+[ext_resource path="res://sprites/players/sonic.png" type="Texture" id=6]
 [ext_resource path="res://scripts/player/player_state_machine.gd" type="Script" id=7]
 [ext_resource path="res://scripts/player/resources/player_collision.gd" type="Script" id=8]
 [ext_resource path="res://scripts/player/player.gd" type="Script" id=9]
 [ext_resource path="res://scripts/player/player_skin.gd" type="Script" id=10]
 [ext_resource path="res://scripts/player/states/spring_player_state.gd" type="Script" id=11]
+[ext_resource path="res://scripts/player/player_audio.gd" type="Script" id=12]
+[ext_resource path="res://objects/audios/SpinAudio.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/audios/BrakeAudio.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/audios/JumpAudio.tscn" type="PackedScene" id=15]
+[ext_resource path="res://objects/shields/insta_shield.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scripts/shields/shields_manager.gd" type="Script" id=17]
+[ext_resource path="res://objects/shields/blue_shield.tscn" type="PackedScene" id=18]
+[ext_resource path="res://objects/shields/thunder_shield.tscn" type="PackedScene" id=19]
+[ext_resource path="res://objects/shields/flame_shield.tscn" type="PackedScene" id=20]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 8 )
@@ -181,15 +190,15 @@ animation = "peel_out"
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "skidding"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "corkscrew"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "idle"
 
-[sub_resource type="AnimationNodeTimeScale" id=17]
+[sub_resource type="AnimationNodeTimeScale" id=18]
 
-[sub_resource type="AnimationNodeTransition" id=18]
+[sub_resource type="AnimationNodeTransition" id=19]
 input_count = 7
 input_0/name = "idle"
 input_0/auto_advance = false
@@ -206,9 +215,9 @@ input_5/auto_advance = false
 input_6/name = "corkscrew"
 input_6/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=19]
+[sub_resource type="AnimationNodeBlendTree" id=20]
 graph_offset = Vector2( -319.42, 164.5 )
-nodes/Animation/node = SubResource( 16 )
+nodes/Animation/node = SubResource( 17 )
 nodes/Animation/position = Vector2( -140, 160 )
 "nodes/Animation 2/node" = SubResource( 11 )
 "nodes/Animation 2/position" = Vector2( -140, 280 )
@@ -220,12 +229,12 @@ nodes/Animation/position = Vector2( -140, 160 )
 "nodes/Animation 5/position" = Vector2( -140, 520 )
 "nodes/Animation 6/node" = SubResource( 15 )
 "nodes/Animation 6/position" = Vector2( -140, 760 )
-"nodes/Animation 7/node" = SubResource( 20 )
+"nodes/Animation 7/node" = SubResource( 16 )
 "nodes/Animation 7/position" = Vector2( -140, 880 )
 nodes/output/position = Vector2( 580, 380 )
-nodes/speed/node = SubResource( 17 )
+nodes/speed/node = SubResource( 18 )
 nodes/speed/position = Vector2( 400, 380 )
-nodes/state/node = SubResource( 18 )
+nodes/state/node = SubResource( 19 )
 nodes/state/position = Vector2( 220, 380 )
 node_connections = [ "speed", 0, "state", "state", 0, "Animation", "state", 1, "Animation 2", "state", 2, "Animation 3", "state", 3, "Animation 5", "state", 4, "Animation 4", "state", 5, "Animation 6", "state", 6, "Animation 7", "output", 0, "speed" ]
 
@@ -233,6 +242,7 @@ node_connections = [ "speed", 0, "state", "state", 0, "Animation", "state", 1, "
 script = ExtResource( 9 )
 bounds = [ SubResource( 1 ), SubResource( 2 ) ]
 stats = [ SubResource( 3 ) ]
+ground_layer = 3
 
 [node name="StateMachine" type="Node2D" parent="."]
 script = ExtResource( 7 )
@@ -254,6 +264,26 @@ script = ExtResource( 2 )
 [node name="Spring" type="Node2D" parent="StateMachine"]
 script = ExtResource( 11 )
 
+[node name="Shields" type="Node2D" parent="."]
+script = ExtResource( 17 )
+
+[node name="InstaShield" parent="Shields" instance=ExtResource( 16 )]
+
+[node name="BlueShield" parent="Shields" instance=ExtResource( 18 )]
+
+[node name="ThunderShield" parent="Shields" instance=ExtResource( 19 )]
+
+[node name="FlameShield" parent="Shields" instance=ExtResource( 20 )]
+
+[node name="Audios" type="Node2D" parent="."]
+script = ExtResource( 12 )
+
+[node name="JumpAudio" parent="Audios" instance=ExtResource( 15 )]
+
+[node name="BrakeAudio" parent="Audios" instance=ExtResource( 14 )]
+
+[node name="SpinAudio" parent="Audios" instance=ExtResource( 13 )]
+
 [node name="Skin" type="Sprite" parent="."]
 texture = ExtResource( 6 )
 hframes = 10
@@ -270,7 +300,7 @@ anims/skidding = SubResource( 9 )
 anims/walking = SubResource( 10 )
 
 [node name="AnimationTree" type="AnimationTree" parent="Skin"]
-tree_root = SubResource( 19 )
+tree_root = SubResource( 20 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/speed/scale = 1.0

@@ -4,6 +4,7 @@ class_name RollingPlayerState
 
 func enter(player: Player):
 	player.is_rolling = true
+	player.audios.spin_audio.play()
 	player.set_bounds(1)
 
 func step(player: Player, delta: float):
@@ -22,4 +23,4 @@ func step(player: Player, delta: float):
 
 func animate(player: Player, _delta: float):
 	player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)
-	player.skin.set_animation_speed(max(4 / 60.0 + abs(player.velocity.x) / 120.0, 1.0))
+	player.skin.set_rolling_animation_speed(abs(player.velocity.x))

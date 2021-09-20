@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/test_level.png-3e37d05e92a8403ef155dc75e6a5ead8.stex"
+path="res://.import/ring_sparkle.png-c250b6b1c7aa46d43040ab1e52a0b7bb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/test_level.png"
-dest_files=[ "res://.import/test_level.png-3e37d05e92a8403ef155dc75e6a5ead8.stex" ]
+source_file="res://sprites/sparkles/ring_sparkle.png"
+dest_files=[ "res://.import/ring_sparkle.png-c250b6b1c7aa46d43040ab1e52a0b7bb.stex" ]
 
 [params]
 

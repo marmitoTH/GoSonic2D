@@ -71,7 +71,6 @@ node_connections = [ "state", 0, "Animation", "state", 1, "Animation 2", "output
 extents = Vector2( 14, 16 )
 
 [node name="RingMonitor" type="Node2D"]
-position = Vector2( 480, 616 )
 script = ExtResource( 10 )
 ground_layer = 3
 

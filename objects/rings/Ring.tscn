@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/rings/ring.gd" type="Script" id=1]
 [ext_resource path="res://objects/audios/RingAudio.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/rings/ring.png" type="Texture" id=3]
 [ext_resource path="res://scripts/nodes/score_controller.gd" type="Script" id=4]
+[ext_resource path="res://objects/particles/ring_sparkle.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "rotate"
@@ -40,7 +41,7 @@ script = ExtResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 hframes = 8
-frame = 2
+frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 anims/rotate = SubResource( 1 )
@@ -55,10 +56,14 @@ active = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 4 )
 
+[node name="RingSparkle" parent="." instance=ExtResource( 5 )]
+visible = false
+z_index = 1
+
+[node name="RingAudio" parent="." instance=ExtResource( 2 )]
+
 [node name="ScoreController" type="Node" parent="."]
 script = ExtResource( 4 )
 rings = 1
-
-[node name="RingAudio" parent="." instance=ExtResource( 2 )]
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

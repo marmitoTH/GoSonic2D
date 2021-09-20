@@ -57,7 +57,6 @@ node_connections = [ "state", 0, "Animation", "state", 1, "Animation 2", "output
 extents = Vector2( 16, 8 )
 
 [node name="YellowSpringUp" type="Node2D"]
-position = Vector2( 2200, 680 )
 script = ExtResource( 1 )
 spring_audio_path = NodePath("SpringAudio")
 

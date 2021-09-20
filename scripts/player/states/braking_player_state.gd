@@ -2,6 +2,9 @@ extends PlayerState
 
 class_name BrakingPlayerState
 
+func enter(player: Player):
+	player.audios.brake_audio.play()
+
 func step(player: Player, delta: float):
 	player.handle_fall()
 	player.handle_jump()

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/quartz_quadrant_zone_good_future.ogg-e1729d7ae32422d9e30c70260f416839.oggstr"
+
+[deps]
+
+source_file="res://audios/musics/quartz_quadrant_zone_good_future.ogg"
+dest_files=[ "res://.import/quartz_quadrant_zone_good_future.ogg-e1729d7ae32422d9e30c70260f416839.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=15.0

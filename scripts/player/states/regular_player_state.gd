@@ -24,16 +24,11 @@ func step(player: Player, delta: float):
 
 func animate(player: Player, _delta: float):
 	var absolute_speed = abs(player.velocity.x)
-	var state = PlayerSkin.ANIMATION_STATES.idle
 	
 	player.skin.handle_flip(player.input_direction.x)
-	player.skin.set_animation_speed(max(8.0 / 60.0 + absolute_speed / 120.0, 1.0))
+	player.skin.set_regular_animation_speed(absolute_speed)
 	
-	if absolute_speed >= 0.3 and absolute_speed <= 355:
-		state = PlayerSkin.ANIMATION_STATES.walking
-	elif absolute_speed > 355 and absolute_speed <= 595:
-		state = PlayerSkin.ANIMATION_STATES.running
-	elif absolute_speed > 595:
-		state = PlayerSkin.ANIMATION_STATES.peel_out
-	
-	player.skin.set_animation_state(state)
+	if absolute_speed >= 0.3:
+		player.skin.set_running_animation_state(absolute_speed)
+	else:
+		player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.idle)
