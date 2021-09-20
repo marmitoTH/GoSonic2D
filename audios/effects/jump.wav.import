@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/ring.wav-b7fc3cf557adb5f05b5ea1b6174f06e6.sample"
+path="res://.import/jump.wav-23e63c373241b42a33478b4184f4e252.sample"
 
 [deps]
 
-source_file="res://audios/ring.wav"
-dest_files=[ "res://.import/ring.wav-b7fc3cf557adb5f05b5ea1b6174f06e6.sample" ]
+source_file="res://audios/effects/jump.wav"
+dest_files=[ "res://.import/jump.wav-23e63c373241b42a33478b4184f4e252.sample" ]
 
 [params]
 

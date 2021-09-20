@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/spring.wav-17f9d36ba425530289b1e6eb4dc52f1a.sample"
+path="res://.import/fire_attack.wav-acfda7030255e8512ff24f595550ea6e.sample"
 
 [deps]
 
-source_file="res://audios/spring.wav"
-dest_files=[ "res://.import/spring.wav-17f9d36ba425530289b1e6eb4dc52f1a.sample" ]
+source_file="res://audios/effects/fire_attack.wav"
+dest_files=[ "res://.import/fire_attack.wav-acfda7030255e8512ff24f595550ea6e.sample" ]
 
 [params]
 

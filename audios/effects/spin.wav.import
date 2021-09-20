@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/yes.wav-53a6b482f729d820e279e8f35d9c371f.sample"
+path="res://.import/spin.wav-41c278fde35e7379e6ca7b66aeb4b952.sample"
 
 [deps]
 
-source_file="res://audios/yes.wav"
-dest_files=[ "res://.import/yes.wav-53a6b482f729d820e279e8f35d9c371f.sample" ]
+source_file="res://audios/effects/spin.wav"
+dest_files=[ "res://.import/spin.wav-41c278fde35e7379e6ca7b66aeb4b952.sample" ]
 
 [params]
 

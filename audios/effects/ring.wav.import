@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/explosion.wav-81d275920cb218222ff23e2b462d798f.sample"
+path="res://.import/ring.wav-7e88a49b93850423129ac0690a0819b0.sample"
 
 [deps]
 
-source_file="res://audios/explosion.wav"
-dest_files=[ "res://.import/explosion.wav-81d275920cb218222ff23e2b462d798f.sample" ]
+source_file="res://audios/effects/ring.wav"
+dest_files=[ "res://.import/ring.wav-7e88a49b93850423129ac0690a0819b0.sample" ]
 
 [params]
 
