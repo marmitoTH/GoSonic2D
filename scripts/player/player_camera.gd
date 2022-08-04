@@ -2,7 +2,7 @@ extends Camera2D
 
 class_name PlayerCamera
 
-export(float) var max_offset = 16
+export(float) var max_speed = 960
 export(float) var right_margin = 0
 export(float) var left_margin = -16
 export(float) var top_margin = -32
@@ -13,9 +13,9 @@ var player: Player
 func _ready():
 	initialize_camera()
 
-func _process(_delta):
-	handle_horizontal_borders()
-	handle_vertical_borders()
+func _physics_process(delta):
+	handle_horizontal_borders(delta)
+	handle_vertical_borders(delta)
 
 func initialize_camera():
 	current = true
@@ -30,33 +30,33 @@ func set_limits(left: int, right: int, top: int, bottom: int):
 	limit_top = top
 	limit_bottom = bottom
 
-func handle_horizontal_borders():
+func handle_horizontal_borders(delta: float):
 	var pivot_offset = player.current_bounds.offset
 	var target = player.global_position.x + pivot_offset.x
 	
 	if target > position.x + right_margin:
 		var offset = target - position.x - right_margin
-		position.x += min(offset, max_offset)
+		position.x += min(offset, max_speed * delta)
 	
 	if target < position.x + left_margin:
 		var offset = target - position.x - left_margin
-		position.x += max(offset, -max_offset)
+		position.x += max(offset, -max_speed * delta)
 
-func handle_vertical_borders():
+func handle_vertical_borders(delta: float):
 	var pivot_offset = player.current_bounds.offset
 	var target = player.global_position.y + pivot_offset.y
 	
 	if player.is_grounded:
 		var offset = target - position.y
-		position.y += clamp(offset, -max_offset, max_offset * 0.5)
+		position.y += clamp(offset, -max_speed * delta, max_speed * delta * 0.5)
 	else:
 		if target < position.y + top_margin :
 			var offset = target - position.y - top_margin
-			position.y += max(offset, -max_offset)
+			position.y += max(offset, -max_speed * delta)
 		
 		if target > position.y + bottom_margin:
 			var offset = target - position.y - bottom_margin
-			position.y += min(offset, max_offset)
+			position.y += min(offset, max_speed * delta)
 
 #func _draw():
 #	var right = Vector2.RIGHT * right_margin
