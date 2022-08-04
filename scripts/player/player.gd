@@ -57,7 +57,6 @@ func _physics_process(delta):
 	handle_limits()
 	handle_state_animation(delta)
 	handle_skin(delta)
-	#update()
 
 func initialize_collider():
 	var collision = CollisionShape2D.new()
@@ -100,7 +99,7 @@ func handle_state_update(delta: float):
 func handle_motion(delta: float):
 	var offset = velocity.length() * delta
 	var max_motion_size = current_bounds.width_radius
-	var motion_steps = int(offset / max_motion_size) + 1
+	var motion_steps = ceil(offset / max_motion_size)
 	var step_motion = velocity / motion_steps
 
 	while motion_steps > 0:
@@ -116,11 +115,11 @@ func handle_collision():
 func handle_limits():
 	if is_locked_to_limits:
 		var offset = current_bounds.width_radius
-		if position.x + offset > limit_right:
-			position.x = limit_right - offset
+		if global_position.x + offset > limit_right:
+			global_position.x = limit_right - offset
 			velocity.x = 0
-		if position.x - offset < limit_left:
-			position.x = limit_left + offset
+		if global_position.x - offset < limit_left:
+			global_position.x = limit_left + offset
 			velocity.x = 0
 
 func handle_state_animation(delta):
@@ -210,7 +209,7 @@ func handle_contact(contact: Dictionary, signal_name: String):
 			contact.collider.emit_signal(signal_name, self)
 
 func handle_platform(platform_collider: StaticBody2D):
-	if is_grounded and platform_collider is SolidObject:
+	if is_grounded and platform_collider is MovingPlatform:
 		reparent(platform_collider)
 	else:
 		reparent(initial_parent)

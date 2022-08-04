@@ -1,4 +1,6 @@
-extends Node2D
+extends StaticBody2D
+
+class_name MovingPlatform
 
 export(float) var amplitude = 50
 export(float) var period = 1
