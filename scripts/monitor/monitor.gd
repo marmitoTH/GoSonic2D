@@ -72,9 +72,9 @@ func _on_SolidObject_player_ground_collision(player: Player):
 		destroy()
 
 func _on_SolidObject_player_left_wall_collision(player: Player):
-	if player.is_grounded and player.is_rolling:
+	if player.is_grounded() and player.is_rolling:
 		destroy()
 
 func _on_SolidObject_player_right_wall_collision(player: Player):
-	if player.is_grounded and player.is_rolling:
+	if player.is_grounded() and player.is_rolling:
 		destroy()

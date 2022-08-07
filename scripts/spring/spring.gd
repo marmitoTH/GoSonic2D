@@ -16,9 +16,6 @@ func activate():
 	animation_tree.set("parameters/state/active", true)
 
 func apply_vertical_force(player: Player, direction: int):
-	if player.is_grounded:
-		player.exit_ground()
-	
 	player.velocity.y = power * -direction
 	activate()
 

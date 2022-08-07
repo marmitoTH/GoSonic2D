@@ -11,7 +11,7 @@ func step(player: Player, delta: float):
 	player.handle_gravity(delta)
 	player.handle_acceleration(delta)
 	
-	if player.is_grounded:
+	if player.is_grounded():
 		player.state_machine.change_state("Regular")
 	elif player.velocity.y > 0:
 		player.state_machine.change_state("Air")

@@ -3,7 +3,6 @@ extends PlayerState
 class_name RegularPlayerState
 
 func enter(player: Player):
-	player.is_rolling = false
 	player.set_bounds(0)
 
 func step(player: Player, delta: float):
@@ -14,7 +13,7 @@ func step(player: Player, delta: float):
 	player.handle_acceleration(delta)
 	player.handle_friction(delta)
 
-	if player.is_grounded:
+	if player.is_grounded():
 		if player.input_dot_velocity < 0 and abs(player.velocity.x) >= player.current_stats.min_speed_to_brake:
 			player.state_machine.change_state("Braking")
 		if player.input_direction.y < 0 and abs(player.velocity.x) > player.current_stats.min_speed_to_roll:

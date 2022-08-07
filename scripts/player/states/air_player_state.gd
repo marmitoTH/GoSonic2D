@@ -17,7 +17,7 @@ func step(player: Player, delta: float):
 	player.handle_jump()
 	player.handle_acceleration(delta)
 
-	if player.is_grounded:
+	if player.is_grounded():
 		if player.input_direction.y < 0:
 			player.state_machine.change_state("Rolling")
 		else:

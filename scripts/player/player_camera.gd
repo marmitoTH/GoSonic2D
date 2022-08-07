@@ -46,7 +46,7 @@ func handle_vertical_borders(delta: float):
 	var pivot_offset = player.current_bounds.offset
 	var target = player.global_position.y + pivot_offset.y
 	
-	if player.is_grounded:
+	if player.is_grounded():
 		var offset = target - position.y
 		position.y += clamp(offset, -max_speed * delta, max_speed * delta * 0.5)
 	else:

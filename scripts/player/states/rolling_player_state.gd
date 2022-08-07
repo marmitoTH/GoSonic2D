@@ -15,7 +15,7 @@ func step(player: Player, delta: float):
 	player.handle_deceleration(delta)
 	player.handle_friction(delta)
 	
-	if player.is_grounded:
+	if player.is_grounded():
 		if abs(player.velocity.x) < player.current_stats.unroll_speed:
 			player.state_machine.change_state("Regular")
 	else:
