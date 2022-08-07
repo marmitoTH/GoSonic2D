@@ -177,7 +177,7 @@ func handle_ceiling_collision():
 			if abs(ceiling_angle) < 135:
 				set_ground_data(ceiling_normal)
 				rotate_to(ceiling_angle)
-				enter_ground()
+				enter_ground(hits.closest_hit)
 			else:
 				velocity.y = 0
 		
@@ -190,14 +190,13 @@ func handle_ground_collision():
 
 	if hits and velocity.y >= 0:
 		handle_contact(hits.closest_hit.collider, "player_ground_collision")
-		handle_platform(hits.closest_hit.collider)
 		
 		if not hits.closest_hit.collider is SolidObject or hits.closest_hit.collider.is_enabled():
 			if not __is_grounded and velocity.y >= 0:
 				set_ground_data(hits.closest_hit.normal)
 				rotate_to(ground_angle)
 				position -= transform.y * hits.closest_hit.penetration
-				enter_ground()
+				enter_ground(hits.closest_hit)
 			elif hits.left_hit or hits.right_hit:
 				var safe_distance = hits.closest_hit.penetration - current_bounds.ground_extension
 				set_ground_data(hits.closest_hit.normal)
@@ -323,12 +322,13 @@ func reparent(new_parent: Node):
 		new_parent.add_child(self)
 		global_transform = old_transform
 
-func enter_ground():
+func enter_ground(ground_data: Dictionary):
 	if not __is_grounded:
 		is_jumping = false
 		is_rolling = false
 		__is_grounded = true
 		velocity = GoUtils.global_to_ground_velocity(velocity, ground_normal)
+		handle_platform(ground_data.collider)
 		emit_signal("ground_enter")
 
 func exit_ground():
