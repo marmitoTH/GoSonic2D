@@ -26,7 +26,7 @@ var velocity: Vector2
 var destroyed: bool
 var allow_movement: bool
 
-func _process(delta):
+func _physics_process(delta):
 	if allow_movement:
 		handle_movement(delta)
 		handle_collision()
@@ -42,7 +42,8 @@ func handle_collision():
 	if ground_hit:
 		allow_movement = false
 		velocity = Vector2.ZERO
-		position -= transform.y * ground_hit.penetration
+		position.y -= ground_hit.penetration
+		position = position.round()
 
 func destroy():
 	if not destroyed:
