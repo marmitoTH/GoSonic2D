@@ -18,8 +18,7 @@ func step(player: Player, delta: float):
 	if player.is_grounded():
 		if abs(player.velocity.x) < player.current_stats.unroll_speed:
 			player.state_machine.change_state("Regular")
-	else:
-		player.state_machine.change_state("Air")
+			player.is_rolling = false;
 
 func animate(player: Player, _delta: float):
 	player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)
