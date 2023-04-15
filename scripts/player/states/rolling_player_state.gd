@@ -17,6 +17,7 @@ func step(player: Player, delta: float):
 	
 	if player.is_grounded():
 		if abs(player.velocity.x) < player.current_stats.unroll_speed:
+			player.is_rolling = false
 			player.state_machine.change_state("Regular")
 	else:
 		player.state_machine.change_state("Air")
