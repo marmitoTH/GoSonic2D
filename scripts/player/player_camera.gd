@@ -2,7 +2,9 @@ extends Camera2D
 
 class_name PlayerCamera
 
-export(float) var max_speed = 960
+export(float) var high_velocity_speed = 960
+export(float) var low_velocity_speed = 360
+export(float) var high_velocity_xsp = 480
 export(float) var right_margin = 0
 export(float) var left_margin = -16
 export(float) var top_margin = -32
@@ -31,32 +33,32 @@ func set_limits(left: int, right: int, top: int, bottom: int):
 	limit_bottom = bottom
 
 func handle_horizontal_borders(delta: float):
-	var pivot_offset = player.current_bounds.offset
-	var target = player.global_position.x + pivot_offset.x
+	var target = player.get_position().x
 	
 	if target > position.x + right_margin:
 		var offset = target - position.x - right_margin
-		position.x += min(offset, max_speed * delta)
+		position.x += min(offset, high_velocity_speed * delta)
 	
 	if target < position.x + left_margin:
 		var offset = target - position.x - left_margin
-		position.x += max(offset, -max_speed * delta)
+		position.x += max(offset, -high_velocity_speed * delta)
 
 func handle_vertical_borders(delta: float):
-	var pivot_offset = player.current_bounds.offset
-	var target = player.global_position.y + pivot_offset.y
+	var target = player.get_position().y
 	
 	if player.is_grounded():
 		var offset = target - position.y
-		position.y += clamp(offset, -max_speed * delta, max_speed * delta * 0.5)
+		var is_at_high_velocity = player.velocity.x <= high_velocity_xsp
+		var speed = low_velocity_speed if is_at_high_velocity else high_velocity_speed
+		position.y += clamp(offset, -speed * delta, speed * delta)
 	else:
 		if target < position.y + top_margin :
 			var offset = target - position.y - top_margin
-			position.y += max(offset, -max_speed * delta)
+			position.y += max(offset, -high_velocity_speed * delta)
 		
 		if target > position.y + bottom_margin:
 			var offset = target - position.y - bottom_margin
-			position.y += min(offset, max_speed * delta)
+			position.y += min(offset, high_velocity_speed * delta)
 
 #func _draw():
 #	var right = Vector2.RIGHT * right_margin

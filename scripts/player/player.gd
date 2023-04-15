@@ -79,6 +79,11 @@ func initialize_skin():
 	remove_child(skin)
 	get_tree().root.call_deferred("add_child", skin)
 
+func get_position():
+	var y_offset = transform.y * current_bounds.offset.y
+	var x_offset = transform.x * current_bounds.offset.x
+	return global_position + y_offset + x_offset
+
 func set_bounds(index: int):
 	if index >= 0 and index < bounds.size():
 		var last_bounds = current_bounds
