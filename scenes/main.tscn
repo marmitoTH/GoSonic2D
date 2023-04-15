@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://objects/players/sonic.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/hud/HUD.tscn" type="PackedScene" id=2]
@@ -11,6 +11,11 @@
 [ext_resource path="res://objects/springs/yellow_spring_up.tscn" type="PackedScene" id=9]
 [ext_resource path="res://objects/rings/Ring.tscn" type="PackedScene" id=10]
 [ext_resource path="res://objects/monitors/RingMonitor.tscn" type="PackedScene" id=11]
+[ext_resource path="res://objects/activators/UpperTileActivatorBig.tscn" type="PackedScene" id=12]
+[ext_resource path="res://objects/activators/LowerTileActivatorSmall.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/activators/LowerTileActivatorBig.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/activators/UpperTileActivatorSmall.tscn" type="PackedScene" id=15]
+[ext_resource path="res://objects/springs/yellow_spring_left.tscn" type="PackedScene" id=16]
 
 [sub_resource type="TileSet" id=1]
 0/name = "isolated_island_details.png 0"
@@ -542,6 +547,7 @@ position = Vector2( 104, 716 )
 
 [node name="ZoneMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
+autoplay = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -550,11 +556,35 @@ stream = ExtResource( 7 )
 [node name="Debug" parent="CanvasLayer" instance=ExtResource( 3 )]
 zone_path = NodePath("../..")
 
+[node name="UpperTileActivatorBig" parent="." instance=ExtResource( 12 )]
+position = Vector2( 2224, 544 )
+
+[node name="UpperTileActivatorBig2" parent="." instance=ExtResource( 12 )]
+position = Vector2( 2864, 608 )
+
+[node name="LowerTileActivatorSmall" parent="." instance=ExtResource( 13 )]
+position = Vector2( 2336, 416 )
+
+[node name="LowerTileActivatorSmall2" parent="." instance=ExtResource( 13 )]
+position = Vector2( 2984, 480 )
+
+[node name="UpperTileActivatorSmall" parent="." instance=ExtResource( 15 )]
+position = Vector2( 2400, 416 )
+
+[node name="UpperTileActivatorSmall2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 3040, 480 )
+
+[node name="LowerTileActivatorBig" parent="." instance=ExtResource( 14 )]
+position = Vector2( 2512, 552 )
+
+[node name="LowerTileActivatorBig2" parent="." instance=ExtResource( 14 )]
+position = Vector2( 3152, 608 )
+
 [node name="SolidTiles" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 1179705, 0, 0, 1179706, 1, 0, 1179710, 1, 0, 1179714, 2, 0, 1310768, 0, 0, 1310769, 1, 0, 1310773, 1, 0, 1310777, 9, 0, 1310778, 8, 0, 1310782, 8, 0, 1310786, 7, 0, 1376292, 3, 0, 1376296, 1, 0, 1376300, 1, 0, 1507327, 0, 0, 1441792, 1, 0, 1441796, 1, 0, 1441800, 1, 0, 1441804, 1, 0, 1441808, 1, 0, 1441812, 1, 0, 1441816, 1, 0, 1441820, 5, 0, 1441824, 5, 0, 1441840, 9, 0, 1441841, 10, 0, 1441845, 8, 0, 1507368, 8, 0, 1507372, 8, 0, 1638399, 7, 0, 1572864, 8, 0, 1572868, 10, 0, 1572872, 8, 0, 1572876, 8, 0, 1572880, 11, 0, 1572884, 8, 0, 1572888, 8, 0, 1572892, 8, 0, 1572896, 10, 0, 1572900, 14, 0, 1572921, 13, 0, 1572922, 14, 0, 1572926, 16, 0, 1572930, 15, 0 )
+tile_data = PoolIntArray( 655430, 1, 0, 655434, 536870913, 0, 786502, 25, 0, 786506, 536870937, 0, 786522, 536870913, 0, 786526, 536870913, 0, 917594, 536870938, 0, 917598, 536870937, 0, 1179705, 0, 0, 1179706, 1, 0, 1179710, 1, 0, 1179714, 1, 0, 1179726, 1, 0, 1179730, 536870915, 0, 1245254, 536870934, 0, 1245258, 536870932, 0, 1245270, 536870915, 0, 1310768, 0, 0, 1310769, 1, 0, 1310773, 1, 0, 1310777, 9, 0, 1310778, 8, 0, 1310782, 8, 0, 1310786, 10, 0, 1310790, 14, 0, 1310794, 16, 0, 1310798, 10, 0, 1310818, 536870915, 0, 1376292, 3, 0, 1376296, 1, 0, 1376300, 1, 0, 1376338, 16, 0, 1376346, 536870934, 0, 1376350, 536870932, 0, 1376358, 536870915, 0, 1507327, 0, 0, 1441792, 1, 0, 1441796, 1, 0, 1441800, 1, 0, 1441804, 1, 0, 1441808, 1, 0, 1441812, 1, 0, 1441816, 1, 0, 1441820, 5, 0, 1441824, 1, 0, 1441840, 9, 0, 1441841, 10, 0, 1441845, 8, 0, 1441878, 14, 0, 1441882, 16, 0, 1441886, 14, 0, 1441898, 536870912, 0, 1441951, 0, 0, 1441952, 1, 0, 1441956, 1, 0, 1441960, 1, 0, 1507368, 8, 0, 1507372, 8, 0, 1507426, 8, 0, 1507483, 12, 0, 1638399, 7, 0, 1572864, 8, 0, 1572868, 10, 0, 1572872, 8, 0, 1572876, 8, 0, 1572880, 11, 0, 1572884, 8, 0, 1572888, 8, 0, 1572892, 8, 0, 1572896, 10, 0, 1572900, 14, 0, 1572921, 13, 0, 1572922, 14, 0, 1572926, 16, 0, 1572930, 14, 0, 1572966, 536870920, 0, 1572970, 536870919, 0, 1572971, 536870914, 0, 1572972, 536870913, 0, 1572976, 536870913, 0, 1572980, 536870913, 0, 1572984, 536870913, 0, 1572988, 536870913, 0, 1572992, 536870913, 0, 1572996, 536870913, 0, 1573000, 536870912, 0, 1573023, 7, 0, 1573024, 536870923, 0, 1573028, 536870920, 0, 1573032, 536870920, 0, 1704043, 536870919, 0, 1704044, 536870920, 0, 1704048, 536870922, 0, 1704052, 536870920, 0, 1704056, 536870920, 0, 1704060, 536870923, 0, 1704064, 536870920, 0, 1704068, 536870920, 0, 1704072, 536870919, 0, 1704073, 536870914, 0, 1704074, 536870913, 0, 1704078, 536870913, 0, 1704082, 536870913, 0, 1704086, 536870913, 0, 1704090, 536870913, 0, 1704094, 536870912, 0, 1835110, 536870926, 0, 1835114, 536870925, 0, 1835145, 7, 0, 1835146, 10, 0, 1835150, 8, 0, 1835154, 4, 0, 1835158, 8, 0, 1835162, 11, 0, 1835166, 536870919, 0, 1835167, 536870925, 0, 1835168, 536870926, 0, 1835172, 536870926, 0, 1835176, 536870926, 0, 1900690, 14, 0, 1966187, 536870925, 0, 1966204, 536870926, 0, 1966208, 536870928, 0, 1966212, 536870926, 0, 1966216, 536870925, 0, 2097289, 13, 0, 2097290, 14, 0, 2097294, 16, 0, 2097302, 14, 0, 2097306, 16, 0, 2097310, 13, 0 )
 
 [node name="OneWayTiles" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
@@ -562,6 +592,21 @@ cell_size = Vector2( 32, 32 )
 collision_layer = 2
 format = 1
 tile_data = PoolIntArray( 1245210, 0, 0, 1245211, 1, 0, 1245215, 2, 0 )
+
+[node name="SolidTilesUpper" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 32, 32 )
+collision_layer = 4
+format = 1
+tile_data = PoolIntArray( 983114, 536870935, 0, 1114206, 536870935, 0 )
+
+[node name="SolidTilesLower" type="TileMap" parent="."]
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 32, 32 )
+collision_layer = 8
+format = 1
+tile_data = PoolIntArray( 983110, 23, 0, 1114202, 536870936, 0 )
 
 [node name="BackgroundTiles" type="TileMap" parent="."]
 z_index = -1
@@ -611,3 +656,6 @@ position = Vector2( 1100, 368 )
 
 [node name="Ring9" parent="." instance=ExtResource( 10 )]
 position = Vector2( 1100, 340 )
+
+[node name="YellowSpringLeft" parent="." instance=ExtResource( 16 )]
+position = Vector2( 1808, 656 )
